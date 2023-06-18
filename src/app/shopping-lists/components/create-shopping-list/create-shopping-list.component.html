@@ -1,0 +1,51 @@
+<mat-progress-bar *ngIf="progressService.visible" mode="indeterminate"></mat-progress-bar>
+<!-- <div class="container"> -->
+<h2>Create new shopping list</h2>
+<div class="grid">
+  <form mat-form [formGroup]="dataForm">
+    <div class="3/4--desk grid__cell">
+      <mat-form-field appearance="fill">
+        <mat-label>Assigned Shop</mat-label>
+        <mat-select formControlName="assignedShop">
+          <mat-option *ngFor="let shop of shops" [value]="shop.guid">
+            {{shop.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+  <!-- </div>
+  <div class="grid 1/2--desk" style="margin-bottom: 32px"> -->
+  <div class="grid__cell 1/2--desk">
+
+    <h2>Product List</h2>
+    <mat-list #products class="selection-list">
+      <h4 *ngIf="selectedItems?.length === 0">None of products is selected</h4>
+      <mat-list-item *ngFor="let item of selectedItems">
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+          <span style="align-self: flex-start;">{{item.name}}</span>
+          <div>
+            <button (click)="remove(item)" mat-icon-button>
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <div class="grid__cell 1/2--desk">
+    <mat-form-field appearance="fill">
+      <input matInput [(ngModel)]="search" type="text" placeholder="Type to filter products"
+        (keyup)="updateFilter($event)" />
+    </mat-form-field>
+    <button (click)="save()" style="margin-left:12px" [disabled]="!isValid()" mat-flat-button
+      color="primary">Save</button>
+    <h2>Products</h2>
+    <mat-selection-list #shoes (selectionChange)="onSelectionChange($event)">
+      <mat-list-option *ngFor="let product of rows" [value]="product" selected="{{isSelected(product)}}">
+        {{product.name}}
+      </mat-list-option>
+    </mat-selection-list>
+  </div>
+</div>
+<!-- </div> -->

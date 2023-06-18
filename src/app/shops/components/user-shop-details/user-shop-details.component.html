@@ -1,0 +1,61 @@
+<mat-progress-bar *ngIf="progressService.visible" mode="indeterminate"></mat-progress-bar>
+<h2>{{header}}</h2>
+<div class="container">
+
+  <div class="grid">
+    <div class="grid__cell 1/5--desk">
+      <form mat-form [formGroup]="dataForm">
+        <div class="3/4--desk grid__cell">
+          <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input formControlName="name" matInput>
+          </mat-form-field>
+          <mat-error>{{getErrorMessage("name")}}</mat-error>
+        </div>
+        <div class="3/4--desk grid__cell">
+          <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <input formControlName="description" matInput>
+          </mat-form-field>
+          <mat-error>{{getErrorMessage("description")}}</mat-error>
+        </div>
+        <div class="3/4--desk grid__cell">
+          <mat-form-field appearance="fill">
+            <mat-label>City</mat-label>
+            <input formControlName="city" matInput>
+          </mat-form-field>
+          <mat-error>{{getErrorMessage("city")}}</mat-error>
+        </div>
+        <div class="3/4--desk grid__cell">
+          <mat-form-field appearance="fill">
+            <mat-label>Street</mat-label>
+            <input formControlName="street" matInput>
+          </mat-form-field>
+          <mat-error>{{getErrorMessage("street")}}</mat-error>
+        </div>
+        <div class="3/4--desk grid__cell">
+          <mat-form-field appearance="fill">
+            <mat-label>Local number</mat-label>
+            <input formControlName="localNumber" matInput>
+          </mat-form-field>
+          <mat-error>{{getErrorMessage("localNumber")}}</mat-error>
+        </div>
+      </form>
+      <div style="width: 200px">
+        <div class="grid__cell 1/2">
+          <button mat-flat-button class="save-button" color="primary" (click)="save()">
+            Save
+          </button>
+        </div>
+        <div *ngIf="isInEditMode()" class="grid__cell 1/2">
+          <button mat-flat-button color="warn" (click)="deleteShop()">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="grid__cell 2/5--desk">
+      <app-categories-configurator #categoriesConfigurator></app-categories-configurator>
+    </div>
+  </div>
+</div>

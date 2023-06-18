@@ -1,0 +1,50 @@
+<div class="container">
+  <h3>Are you sure you want to delete product category: {{data.removedProductCategory.name}}?</h3>
+  <p>There {{this.products.length > 1 ? 'are' : 'is'}} {{this.products.length}}
+    {{this.products.length > 1 ? 'products' : 'product'}} assigned to this category.</p>
+  <p>Select new category to which you want to assign them, or products will become unassigned</p>
+  <div class="grid">
+    <form mat-form [formGroup]="dataForm">
+      <div class="3/4 grid__cell">
+        <mat-form-field appearance="fill">
+          <mat-label>Substitute category</mat-label>
+          <input formControlName="substituteCategory" matInput>
+        </mat-form-field>
+      </div>
+    </form>
+    <div class="grid__cell">
+      <div *ngIf="dataSource.data.length < 1">
+        <h3>Product categories list is empty</h3>
+      </div>
+      <div *ngIf="dataSource.data.length > 0" class="product-categories-tree">
+        <h3>Product Categories:</h3>
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+          <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+            <button mat-icon-button disabled></button>
+            <div class="example-tree-node-content" [ngClass]="{'disabled' : isNodeBeingRemoved(node)}"
+              (click)="$event.stopPropagation(); onNodeSelect(node)">
+              {{node.name}}
+            </div>
+          </mat-tree-node>
+          <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+            <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+              <mat-icon class="mat-icon-rtl-mirror">
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+              </mat-icon>
+            </button>
+            <div class="example-tree-node-content" [ngClass]="{'disabled' : isNodeBeingRemoved(node)}"
+              (click)="$event.stopPropagation(); onNodeSelect(node)">
+              {{node.name}}
+            </div>
+          </mat-tree-node>
+        </mat-tree>
+      </div>
+    </div>
+  </div>
+  <div class="grid--right action-grid">
+    <div class="action-buttons-container grid__cell 1/2">
+      <button mat-flat-button color="primary" (click)="closeDialog()">Cancel</button>
+      <button mat-flat-button color="primary" (click)="confirm()">Confirm</button>
+    </div>
+  </div>
+</div>

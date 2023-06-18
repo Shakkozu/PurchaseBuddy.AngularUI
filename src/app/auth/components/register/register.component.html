@@ -1,0 +1,42 @@
+<div class="container">
+  <form mat-form [formGroup]="form">
+    <div class="grid">
+      <div class="grid__cell">
+        <mat-form-field appearance="fill">
+          <mat-label>Login</mat-label>
+          <input matinput formControlName="login" matInput>
+        </mat-form-field>
+      </div>
+      <div class="grid__cell">
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matinput formControlName="email" email matInput>
+        </mat-form-field>
+      </div>
+      <div class="grid__cell">
+        <mat-form-field appearance="fill">
+          <mat-label>Enter your password</mat-label>
+          <input formControlName="password" matInput [type]="hide ? 'password' : 'text'">
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+		<mat-error></mat-error>
+      </div>
+      <div class="grid__cell">
+        <mat-form-field appearance="fill">
+          <mat-label>Confirm your password</mat-label>
+          <input formControlName="confirmPassword" matInput [type]="hide_confirmation ? 'password' : 'text'">
+          <button mat-icon-button matSuffix (click)="hide_confirmation = !hide_confirmation"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide_confirmation">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+		<mat-error></mat-error>
+      </div>
+    </div>
+    <button mat-button type="button" (click)="save()">Submit</button>
+  </form>
+</div>

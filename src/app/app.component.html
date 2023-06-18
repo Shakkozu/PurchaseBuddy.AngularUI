@@ -1,0 +1,81 @@
+<mat-sidenav-container class="container">
+  <mat-sidenav #sidenav mode="side" opened class="sidenav">
+    <mat-toolbar class="sidenav-toolbar">Menu</mat-toolbar>
+    <mat-nav-list *ngIf="(isUserLoggedIn$ | async)" class="sidenav-links">
+      <a mat-list-item routerLink="/">Home</a>
+      <a mat-list-item routerLink="/user-products">User products</a>
+      <a mat-list-item routerLink="/user-product-categories">Product categories</a>
+      <a mat-list-item routerLink="/user-shops">User shops</a>
+      <a mat-list-item routerLink="/shopping-lists">Shopping lists</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="header">
+      <mat-toolbar color="primary">
+        <button class="mat-sidenav" mat-icon-button (click)="sidenav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span>Purchase Buddy</span>
+        <span class="spacer"></span>
+        <div class="login-register">
+          <div *ngIf="(isUserLoggedIn$ | async)" class="grid__cell 1/4">
+            <button mat-button (click)="logout()"><span>Logout</span></button>
+          </div>
+          <div *ngIf="!(isUserLoggedIn$ | async)" class="grid__cell 1/5">
+            <a mat-button routerLink="/login" routerLinkActive="active">Login</a>
+            <button mat-button routerLink="/register">Register</button>
+          </div>
+        </div>
+      </mat-toolbar>
+    </div>
+
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+
+    <div class="footer">
+      <nav mat-tab-nav-bar class="mobile-navbar">
+        <a mat-tab-link routerLink="/user-products" routerLinkActive>
+          <div class="row">
+            <div class="col">
+              <mat-icon>menu_book</mat-icon>
+            </div>
+            <div class="col">
+              <span class="label">Products</span>
+            </div>
+          </div>
+        </a>
+        <a mat-tab-link routerLink="/user-product-categories" routerLinkActive>
+          <div class="row">
+            <div class="col">
+              <mat-icon>category</mat-icon>
+            </div>
+            <div class="col">
+              <span class="label">Categories</span>
+            </div>
+          </div>
+        </a>
+        <a mat-tab-link routerLink="/user-shops" routerLinkActive>
+          <div class="row">
+            <div class="col">
+              <mat-icon>store</mat-icon>
+            </div>
+            <div class="col">
+              <span class="label">Shops</span>
+            </div>
+          </div>
+        </a>
+        <a mat-tab-link routerLink="/shopping-lists" routerLinkActive>
+          <div class="row">
+            <div class="col">
+              <mat-icon>shopping_cart</mat-icon>
+            </div>
+            <div class="col">
+              <span class="label">Shopping Lists</span>
+            </div>
+          </div>
+        </a>
+      </nav>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

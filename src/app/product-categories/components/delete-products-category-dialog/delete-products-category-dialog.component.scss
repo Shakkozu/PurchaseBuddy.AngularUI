@@ -1,0 +1,45 @@
+.container {
+  margin: 24px;
+}
+
+mat-tree-node {
+	  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  background-color: antiquewhite;
+  margin: 8px 0;
+}
+
+
+.example-tree-node-content {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  cursor: pointer;
+  padding: 0 16px;
+}
+
+.example-tree-node-content:hover {
+  background-color: #e5e5e5;
+}
+
+.disabled {
+  cursor: none;
+  pointer-events: none;
+  color:burlywood;
+}
+
+.action-buttons-container  {
+  display: contents;
+  margin-right: 16px;
+	margin-top: 32px;
+	button {
+		margin-left: 8px;
+	}
+}
+
+.action-grid {
+  margin-top: 16px;
+  margin-right: 8px;
+
+}

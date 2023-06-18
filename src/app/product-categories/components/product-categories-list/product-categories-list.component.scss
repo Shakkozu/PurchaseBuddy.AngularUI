@@ -1,0 +1,17 @@
+mat-tree-node {
+	  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  background-color: antiquewhite;
+  margin: 8px 0;
+}
+
+.example-tree-node-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.example-trash-button {
+  margin-left: 8px;
+}

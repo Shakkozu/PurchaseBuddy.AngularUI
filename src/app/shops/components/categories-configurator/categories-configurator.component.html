@@ -1,0 +1,16 @@
+<div cdkDropListGroup>
+  <div class="example-container">
+    <h2 style="margin-top:16px;">Shop Categories</h2>
+    <div cdkDropList [cdkDropListData]="categories" class="example-list" (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let item of categories" cdkDrag>{{item.name}}</div>
+    </div>
+  </div>
+
+  <div class="example-container">
+	<app-product-categories-tree #productTree
+	 (categorySelected)="onCategorySelected($event)"
+	 (categoryDeselected)="onCategoryDeselected($event)"
+	 (categoriesInitialized)="onCategoriesInitialized($event)"
+	 ></app-product-categories-tree>
+  </div>
+</div>

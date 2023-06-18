@@ -1,0 +1,27 @@
+.products-table {
+	width: 50%;
+	margin-top: 20px;
+	border-spacing: 0 10px;
+  position: relative;
+}
+
+.search-bar {
+	width: 100%;
+	height: 10%;
+}
+
+
+.example-button-row .mat-mdc-button-base {
+  margin: 8px 8px 8px 0;
+}
+
+.example-flex-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+
+.mat-table {
+  position: relative;
+}

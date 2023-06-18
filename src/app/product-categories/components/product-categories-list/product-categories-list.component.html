@@ -1,0 +1,39 @@
+<div class="grid">
+  <div class="grid grid__cell">
+    <button mat-flat-button class="save-button" color="primary" (click)="addNewCategory()">
+      Add new
+    </button>
+  </div>
+  <div class="grid__cell 1/2--desk">
+    <div *ngIf="dataSource.data.length < 1">
+      <h2 style="margin-top:16px;">Product categories list is empty</h2>
+    </div> 
+    <div *ngIf="dataSource.data.length > 0" class="product-categories-tree">
+      <h2 style="margin-top:16px;">Product Categories</h2>
+      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+          <button mat-icon-button disabled></button>
+          <div class="example-tree-node-content" (click)="$event.stopPropagation();">
+            {{node.name}}
+            <button mat-icon-button (click)="remove(node)" class="example-trash-button">
+              <mat-icon aria-label="Remove item">delete</mat-icon>
+            </button>
+          </div>
+        </mat-tree-node>
+        <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+          <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+          <div class="example-tree-node-content" (click)="$event.stopPropagation();">
+            {{node.name}}
+            <button mat-icon-button (click)="remove(node)" class="example-trash-button">
+              <mat-icon aria-label="Remove item">delete</mat-icon>
+            </button>
+          </div>
+        </mat-tree-node>
+      </mat-tree>
+    </div>
+  </div>
+</div>

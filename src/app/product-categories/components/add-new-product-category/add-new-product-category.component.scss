@@ -1,0 +1,89 @@
+mat-tree-node {
+  align-items: center;
+  padding: 0 24px;
+  background-color: antiquewhite;
+  margin: 8px 0;
+}
+
+.example-tree {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.example-tree-node {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+}
+
+.example-tree-node .mat-icon-button {
+  margin-left: 8px;
+}
+
+.example-tree-node .mat-icon {
+  font-size: 20px;
+}
+
+.example-tree-node button:focus {
+  outline: none;
+}
+
+.mat-tree-node {
+  padding-left: 16px;
+  line-height: 32px;
+}
+
+.mat-tree-node button {
+  margin-left: 8px;
+}
+
+.mat-icon-button {
+  height: 32px;
+  width: 32px;
+}
+
+.mat-icon {
+  font-size: 20px;
+}
+
+.example-tree-invisible {
+  display: none;
+}
+
+.mat-nested-tree-node {
+  padding-left: 16px;
+}
+
+.example-tree-node-content {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  cursor: pointer;
+  padding: 0 16px;
+}
+
+.example-tree-node-content:hover {
+  background-color: #e5e5e5;
+}
+
+.example-tree-node-button {
+  margin-left: auto;
+}
+
+.example-tree-node-leaf {
+  padding-left: 40px;
+}
+
+.example-tree-node-parent {
+  padding-left: 24px;
+}
+
+.example-tree-node-active {
+  background-color: #e0f2f1;
+}
+
+.selected-node {
+  border-radius: 12px;
+  font-weight: 600;
+  background-color: #e3c9ab;
+}

@@ -1,0 +1,79 @@
+mat-tree-node {
+	  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  background-color: antiquewhite;
+  margin: 8px 0;
+}
+
+
+.example-tree-node-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.example-trash-button {
+  margin-left: 8px;
+}
+
+
+.example-tree {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.example-tree-node {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+}
+
+.example-tree-node .mat-icon-button {
+  margin-left: 8px;
+}
+
+.example-tree-node .mat-icon {
+  font-size: 20px;
+}
+
+.example-tree-node button:focus {
+  outline: none;
+}
+
+
+.example-tree-node-content {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  cursor: pointer;
+  padding: 0 16px;
+}
+
+.example-tree-node-content:hover {
+  background-color: #e5e5e5;
+}
+
+.example-tree-node-button {
+  margin-left: auto;
+}
+
+.example-tree-node-leaf {
+  padding-left: 40px;
+}
+
+.example-tree-node-parent {
+  padding-left: 24px;
+}
+
+.example-tree-node-active {
+  background-color: #e0f2f1;
+}
+
+
+.example-tree-node-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+

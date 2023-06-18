@@ -1,0 +1,52 @@
+.title
+{
+	margin: 4px;
+}
+
+.dialog-header {
+	background-color: #3f51b5;
+	color: white;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: relative;
+	height: 40px;
+	padding: 0 16px;
+}
+.close-button {
+	color: white;
+}
+.dialog-content {
+	padding: 16px;
+}
+.dialog-actions {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	padding: 16px;
+}
+.save-button {
+	margin-left: 8px;
+}
+
+/* generic-dialog.component.css */
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.close-button.no-hover {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 8px;
+  background: none; /* Remove the default background color */
+}
+
+
+.dialog-content {
+	max-height: 600px;
+  overflow-y: auto;
+}

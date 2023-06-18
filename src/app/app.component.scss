@@ -1,0 +1,117 @@
+/* app.component.scss */
+.container {
+  height: 100vh;
+  background-color: rgb(255, 252, 248);
+}
+
+
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+
+
+
+/**/
+
+.sidenav-container {
+  height: 100%;
+  background-color: #f5f5f5;
+}
+
+.sidenav {
+  width: 200px;
+  background-color: #fff;
+}
+
+.sidenav-toolbar {
+  color: white;
+  background-color: #3f51b5;
+}
+
+.sidenav-links {
+  padding-top: 24px;
+}
+
+.sidenav-icon {
+  margin-right: 8px;
+}
+
+.sidenav-link-text {
+  font-weight: 500;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.main-toolbar {
+  color: white;
+  background-color: #3f51b5;
+  font-family: 'Roboto', sans-serif;
+}
+
+.main-title {
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.main-content {
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+@media (max-width: 768px) {
+  .mat-sidenav {
+    display: none;
+  }
+}
+
+@media (min-width: 800px) {
+  .mobile-navbar {
+    display: none !important;
+  }
+}
+
+
+nav.mobile-navbar {
+  background-color: #3f51b5;
+  color: #fff;
+  padding: 8px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  // height: 5%;
+
+  a {
+    padding: 4px;
+  }
+}
+
+.mobile-navbar mat-icon {
+  color: #e5eded;
+}
+
+.icon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.label {
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+
+.footer {
+  position: relative;
+  z-index: 2;
+  height: 80px;
+}
