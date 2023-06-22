@@ -9,6 +9,7 @@ import { environment } from "src/environments/environment";
 })
 export class ShopService {
 	constructor (private http: HttpClient) { }
+	private readonly baseUrl = environment.apiUrl + 'shops';
 
 	updateUserShop(id: string, request: UserShopDto): Observable<any> {
 		const body: UserShop = {
@@ -21,15 +22,15 @@ export class ShopService {
 			},
 			categoriesMap: request.categoriesMap
 		}
-		return this.http.put(environment.apiUrl + `shops/${id}`, body);
+		return this.http.put(this.baseUrl + `/${id}`, body);
 	}
 
 	getUserShops(): Observable<UserShop[]> {
-		return this.http.get<UserShop[]>(`${ environment.apiUrl}shops`);
+		return this.http.get<UserShop[]>(`${ this.baseUrl}`);
 	}
 	
 	getUserShop(id: string): Observable<UserShop> {
-		return this.http.get<UserShop>(`${ environment.apiUrl}shops/${id}`);
+		return this.http.get<UserShop>(`${ this.baseUrl}/${id}`);
 	}
 
 	addNewUserShop(request: UserShopDto) {
@@ -43,11 +44,11 @@ export class ShopService {
 			},
 			categoriesMap: request.categoriesMap
 		}
-		return this.http.post(`${ environment.apiUrl }shops`, body);
+		return this.http.post(`${ this.baseUrl }`, body);
 	}
 	
 	deleteUserShop(id: string) {
-		return this.http.delete(`${ environment.apiUrl }shops/${id}`);
+		return this.http.delete(`${ this.baseUrl }/${id}`);
 	}
 }
 

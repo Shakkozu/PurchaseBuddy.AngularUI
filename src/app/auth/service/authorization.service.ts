@@ -8,6 +8,7 @@ import { environment } from "src/environments/environment";
 	providedIn: 'root'
 })
 export class AuthorizationService {
+	private readonly baseUrl = environment.apiUrl + 'authorization/'
 	constructor (private httpClient: HttpClient) {	
 	}
 
@@ -17,14 +18,14 @@ export class AuthorizationService {
 			password: password
 		};
 
-		return this.httpClient.post<string>(environment.apiUrl + '/authorization/login', body);
+		return this.httpClient.post<string>(this.baseUrl + 'login', body);
 	}
 
 	public register(userDto: IUserDto): Observable<string> {
-		return this.httpClient.post<string>(environment.apiUrl + '/authorization/' + 'register', userDto);
+		return this.httpClient.post<string>(this.baseUrl + 'register', userDto);
 	}
 	
 	public logout(sessionId: string) {
-		return this.httpClient.post<string>(environment.apiUrl + '/authorization/' + 'logout', sessionId);
+		return this.httpClient.post<string>(this.baseUrl + 'logout', sessionId);
 	}
 }
