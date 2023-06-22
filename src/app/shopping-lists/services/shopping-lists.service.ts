@@ -8,10 +8,18 @@ import { environment } from "src/environments/environment";
 })
 export class ShoppingListsService {
 	private readonly baseUrl = environment.apiUrl + 'shopping-lists/';
-
+	
 	constructor (private http: HttpClient) {
 	}
+	
+	public updateItemsOnList(listId: any, selectedProducts: string[]) {
+		const request: UpdateShoppingListProductsRequest = {
+			listItems: selectedProducts
+		};
+		console.log(request);
 
+		return this.http.patch(`${this.baseUrl}${listId}/products`, request);
+	}
 
 	public getNotCompletedLists() {
 		return this.http.get<ShoppingListDto[]>(this.baseUrl)
@@ -36,13 +44,13 @@ export class ShoppingListsService {
 	markAsNotPurchased(listId: string, productId: string) {
 		return this.http.put(this.baseUrl + `${ listId}/products/${productId}/mark-as-not-purchased`, null);
 	}
-
-	removeItemFromList(listId: any, productId: string) {
-		return this.http.delete(this.baseUrl + `${ listId }/products/${ productId }`);
-	}
 }
 
 export interface CreateShoppingListRequest {
 	listItems: string[];
 	assignedShop?: string | null;
+}
+
+export interface UpdateShoppingListProductsRequest {
+	listItems: string[];
 }

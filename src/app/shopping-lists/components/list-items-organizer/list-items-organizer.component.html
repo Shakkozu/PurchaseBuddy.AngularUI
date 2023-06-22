@@ -1,0 +1,36 @@
+<div class="grid__cell">
+  <h2>Product On List</h2>
+  <mat-list #products class="selection-list">
+    <h4 *ngIf="selectedItems?.length === 0">None of products is selected</h4>
+    <mat-list-item *ngFor="let item of selectedItems">
+      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <span style="align-self: flex-start;">{{item.name}}</span>
+        <div>
+          <button (click)="remove(item)" mat-icon-button>
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>
+<div class="grid__cell">
+  <h2>Not added Products</h2>
+  <mat-form-field appearance="fill">
+    <input matInput [(ngModel)]="search" type="text" placeholder="Type to filter products"
+      (keyup)="updateFilter($event)" />
+  </mat-form-field>
+  <mat-list #products class="selection-list">
+    <h4 *ngIf="getNotAddedProducts().length === 0">There are none left products to add :)</h4>
+    <mat-list-item *ngFor="let item of rows">
+      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <span style="align-self: flex-start;">{{item.name}}</span>
+        <div>
+          <button (click)="addNewListItem(item)" mat-icon-button>
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>

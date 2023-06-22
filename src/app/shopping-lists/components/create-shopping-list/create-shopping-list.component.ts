@@ -34,19 +34,11 @@ export class CreateShoppingListComponent {
   public products: Product[] = [];
   public rows: Product[] = [];
   myControl = new FormControl('');
+  filteredOptions: Observable<Product[]> | undefined;
   selectedProduct = new FormControl('');
   quantity = new FormControl('');
-  options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<Product[]> | undefined;
-  typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
   selectedItems: Product[] = [];
   public search: string = '';
-
-  public foods: Food[] = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
-  ];
 
   ngOnInit() {
     this.dataForm = this.formBuilder.group({
@@ -124,7 +116,7 @@ export class CreateShoppingListComponent {
     if (!this.isValid()) {
       return;
     }
-    const assignedShopId = this.dataForm.get('assignedShop')?.value ?? '';
+    const assignedShopId = this.dataForm.get('assignedShop')?.value;
     this.progressService.executeWithProgress(() => this.shoppingListService.createNew(listItems, assignedShopId)
       .pipe(
         tap(() => this.router.navigate(['shopping-lists'])

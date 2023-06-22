@@ -3,7 +3,16 @@
     <h2>Shopping List</h2>
   </span>
 </div>
-<div class="grid 2/5--desk">
+<button mat-button mat-flat-button color="primary" style="margin: 8px"
+ *ngIf="!shoppingCompleted"
+  (click)="onEditButtonClicked()">{{isInEditMode ? 'Cancel' : 'Edit' }}
+</button>
+<button *ngIf="isInEditMode" [disabled]="!canUpdateList" mat-button mat-flat-button color="primary" style="margin: 8px"
+  (click)="onUpdateListButtonClicked()">Update List
+</button>
+<app-list-items-organizer [hidden]="!isInEditMode" #organizer>
+</app-list-items-organizer>
+<div *ngIf="!isInEditMode" class="grid 2/5--desk">
   <div class="grid__cell">
     <mat-form-field appearance="fill" style="width: 300px;">
       <mat-label>Assigned shop</mat-label>
@@ -28,7 +37,7 @@
       <mat-list-item *ngFor="let listItem of notPurchased" class="not-purchased-item">
           <span matListItemTitle>{{getListItemName(listItem)}}</span>
           <span matListItemLine>{{getListItemDescription(listItem)}}</span>
-          <button matListItemMeta mat-icon-button (click)="markAsPurchased(listItem)">
+          <button *ngIf="!isInEditMode" matListItemMeta mat-icon-button (click)="markAsPurchased(listItem)">
             <mat-icon>done</mat-icon>
           </button>
       </mat-list-item>
@@ -39,7 +48,7 @@
       <mat-list-item *ngFor="let listItem of purchased" class="purchased-item">
         <span matListItemTitle>{{getListItemName(listItem)}}</span>
         <span matListItemLine>{{getListItemDescription(listItem)}}</span>
-        <button matListItemMeta mat-icon-button (click)="markAsNotPurchased(listItem)">
+        <button *ngIf="!isInEditMode && !shoppingCompleted" matListItemMeta mat-icon-button (click)="markAsNotPurchased(listItem)">
           <mat-icon>delete</mat-icon>
         </button>
       </mat-list-item>

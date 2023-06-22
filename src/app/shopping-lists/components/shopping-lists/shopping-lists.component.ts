@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 import { ShoppingListsService } from '../../services/shopping-lists.service';
@@ -40,7 +41,7 @@ export class ShoppingListsComponent {
       return 'Invalid date';
     }
 
-    const now = new Date();
+    const now = new Date(new Date().toUTCString());
     const diff = now.getTime() - date.getTime();
     const elapsedSeconds = Math.round(diff / (1000));
     const elapsedMinutes = Math.round(diff / (1000 * 60));
