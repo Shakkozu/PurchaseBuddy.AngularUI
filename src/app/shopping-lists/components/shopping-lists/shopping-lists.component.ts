@@ -41,7 +41,16 @@ export class ShoppingListsComponent {
       return 'Invalid date';
     }
 
-    const now = new Date(new Date().toUTCString());
+    const now = new Date(Date.UTC(
+      new Date().getUTCFullYear(),
+      new Date().getUTCMonth(),
+      new Date().getUTCDate(),
+      new Date().getUTCHours(),
+      new Date().getUTCMinutes(),
+      new Date().getUTCSeconds(),
+      new Date().getUTCMilliseconds()
+    ));
+
     const diff = now.getTime() - date.getTime();
     const elapsedSeconds = Math.round(diff / (1000));
     const elapsedMinutes = Math.round(diff / (1000 * 60));

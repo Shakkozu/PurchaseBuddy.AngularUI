@@ -36,7 +36,8 @@
         (keyup)="updateFilter($event)" />
     </mat-form-field>
     <button (click)="save()" style="margin-left:12px" [disabled]="!isValid()" mat-flat-button
-      color="primary">Save</button>
+      color="primary">Save
+    </button>
     <h2>Products</h2>
     <mat-selection-list #shoes (selectionChange)="onSelectionChange($event)">
       <mat-list-option *ngFor="let product of rows" [value]="product" selected="{{isSelected(product)}}">
