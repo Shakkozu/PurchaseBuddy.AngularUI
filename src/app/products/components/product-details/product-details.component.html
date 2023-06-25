@@ -4,11 +4,20 @@
   <div class="grid">
     <form mat-form [formGroup]="dataForm">
       <div class="3/4 grid__cell">
-        <mat-form-field appearance="fill">
-          <mat-label>Product Name</mat-label>
-          <input formControlName="productName" matInput>
-        </mat-form-field>
-        <mat-error>{{getErrorMessage("productName")}}</mat-error>
+          <mat-form-field class="example-full-width">
+            <mat-label>Name</mat-label>
+            <input type="text"
+                  placeholder="Pick one"
+                  matInput
+                  formControlName="productName"
+                  [matAutocomplete]="auto">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+              <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <mat-error>{{getErrorMessage("productName")}}</mat-error>
       </div>
       <div class="3/4 grid__cell">
         <mat-form-field appearance="fill">

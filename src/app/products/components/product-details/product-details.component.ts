@@ -31,6 +31,12 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
   private header = 'New Product';
   private productId!: string;
   public containerStyles: any;
+  public filteredOptions!: string[];
+  public userProductsNames: string[] = [];
+  private customErrors = [{
+    code: "notUniqueProductName",
+    message: "Product with this name already exists"
+  }];
 
   public dataSource!: MatTreeFlatDataSource<ProductCategoryNode, ProductCategoryFlatNode>;
 
@@ -44,15 +50,17 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
     },
     public progressService: ProgressService,
     private activatedRoute: ActivatedRoute) {
-      this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-      this.productCategoriesService
-        .getCategories()
-        .subscribe(categories => this.dataSource.data = categories);
-      this.containerStyles = {
-        margin: this.isOpenedInDialog ? '20px' : '',
-        backgroundColor: 'rgb(255, 252, 248)'
-      };
-    }
+    this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+    this.productCategoriesService
+      .getCategories()
+      .subscribe(categories => this.dataSource.data = categories);
+    this.productService.getUserProducts().subscribe(
+      products => this.userProductsNames = products.map(p => p.name))
+    this.containerStyles = {
+      margin: this.isOpenedInDialog ? '20px' : '',
+      backgroundColor: 'rgb(255, 252, 248) '
+    };
+  }
 
   private get isOpenedInDialog(): boolean {
     return this.data !== undefined && this.data !== null;
@@ -69,7 +77,7 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
   private get navigateToListAfterSave() {
     if (this.data)
       return this.data.navigateToListAfterSave;
-    
+
     return true;
   }
 
@@ -91,7 +99,7 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  public get isInEditMode() : boolean {
+  public get isInEditMode(): boolean {
     return this.productId !== null && this.productId !== undefined;
   }
   ngOnDestroy(): void {
@@ -105,6 +113,14 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
       productName: new FormControl('', [Validators.required, Validators.minLength(3)]),
       productCategory: new FormControl({value: '', disabled: true}, []),
     });
+    this.dataForm.get('productName')?.valueChanges.subscribe(value => {
+      this.filteredOptions = this._filter(value);
+      if (this.userProductsNames && this.userProductsNames.map(pn => pn.trim().toLowerCase()).includes(value.trim().toLowerCase())) {
+        this.dataForm.get('productName')?.setErrors({
+          notUniqueProductName: true
+        });
+      }
+    });
   }
 
   onNodeSelect(node: ProductCategoryNode) {
@@ -112,7 +128,14 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
     this.dataForm.get('productCategory')?.setValue(node.name);
     this.treeControl.collapseAll();
   }
-  
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    if (value.length < 3) return [];
+
+    return this.userProductsNames.filter(productName => productName.toLowerCase().includes(filterValue));
+  }
+
   private _transformer = (node: ProductCategoryNode, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
@@ -135,7 +158,7 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
   );
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
-  
+
   save() {
     if (this.dataForm.invalid || this.saveOccured) {
       return;
@@ -146,7 +169,7 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
     if (this.productId) {
       this.progressService.executeWithProgress(
         () => this.store.dispatch(new UpdateUserProduct(this.productId, productName, this.selectedCategoryGuid)));
-    } else {      
+    } else {
       this.progressService.executeWithProgress(() =>
         this.store.dispatch(new AddNewUserProduct(productName, this.selectedCategoryGuid, this.navigateToListAfterSave)));
 
@@ -172,6 +195,10 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   public getErrorMessage(formControlName: string): string {
+    const notUniqueProductNameError = this.dataForm.get(formControlName)?.getError(this.customErrors[0].code);
+    if (notUniqueProductNameError)
+      return this.customErrors[0].message;
+
     return this.formErrorHandler.handleError(this.dataForm, formControlName);
   }
 
