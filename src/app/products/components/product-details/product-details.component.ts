@@ -115,13 +115,14 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
     });
     this.dataForm.get('productName')?.valueChanges.subscribe(value => {
       this.filteredOptions = this._filter(value);
-      if (this.userProductsNames && this.userProductsNames.map(pn => pn.trim().toLowerCase()).includes(value.trim().toLowerCase())) {
+      if (this.userProductsNames && this.userProductsNames.map(pn => pn.trim().toLowerCase()).includes(value.trim().toLowerCase()) && this.productId === undefined) {
         this.dataForm.get('productName')?.setErrors({
           notUniqueProductName: true
         });
       }
     });
   }
+
 
   public getCategoriesTreeClass() {
     if (this.isOpenedInDialog) {
