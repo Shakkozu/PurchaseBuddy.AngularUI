@@ -123,6 +123,13 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  public getCategoriesTreeClass() {
+    if (this.isOpenedInDialog) {
+      return 'scroll';
+    }
+    return '';
+  }
+
   onNodeSelect(node: ProductCategoryNode) {
     this.selectedCategoryGuid = node.guid;
     this.dataForm.get('productCategory')?.setValue(node.name);
@@ -185,7 +192,7 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
     this.saveOccured = true;
     const productName = this.dataForm.get('productName')?.value;
     this.progressService.executeWithProgress(
-      () => this.store.dispatch(new AddNewUserProduct(productName, this.selectedCategoryGuid, this.navigateToListAfterSave))
+      () => this.store.dispatch(new AddNewUserProduct(productName, this.selectedCategoryGuid, false))
         .pipe(
           tap(() => {
             this.ngOnInit();

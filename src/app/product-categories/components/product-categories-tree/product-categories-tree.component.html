@@ -1,11 +1,14 @@
 <div class="grid">
   <div class="grid__cell">
     <div *ngIf="dataSource.data.length < 1">
-      <h3>Product categories list is empty</h3>
+      <h2>Product categories list is empty</h2>
     </div>
     <div *ngIf="dataSource.data.length > 0" class="product-categories-tree">
 
-      <h3>Product Categories:</h3>
+      <h2>Product Categories:</h2>
+      <button (click)="addNewProductCategory()" style="margin-left:12px" mat-flat-button
+      color="primary">Add new
+    </button>
       <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
         <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
           <button mat-icon-button disabled></button>

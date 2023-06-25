@@ -1,3 +1,11 @@
+.scroll {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.container {
+  margin: 20px;
+}
 mat-tree-node {
   align-items: center;
   padding: 0 24px;

@@ -8,8 +8,9 @@ import { FormErrorHandler } from 'src/app/shared/error-handling/form-error-handl
 import { ExampleFlatNode, ProductCategoryNode } from '../../product-categories.model';
 import { UserProductCategoriesState } from '../../store/product-categories-state';
 import { AddNewUserProductCategory, CreateProductCategoryRequest, InitializeUserProductCategories } from '../../store/product-categories.actions';
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Inject, Optional } from '@angular/core';
 import { ProgressService } from '../../services/product-categories.service';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-add-new-product-category',
   templateUrl: './add-new-product-category.component.html',
@@ -17,6 +18,9 @@ import { ProgressService } from '../../services/product-categories.service';
   providers: [ProgressService]
 })
 export class AddNewProductCategoryComponent implements OnInit {
+  @Output('categoryAdded')
+  public categoryAdded: EventEmitter<string> = new EventEmitter<string>();
+
   private destroy$ = new Subject();
   checklistSelection = new SelectionModel<ProductCategoryNode>(true);
   dataForm!: FormGroup;
@@ -47,8 +51,15 @@ export class AddNewProductCategoryComponent implements OnInit {
   constructor (private formBuilder: FormBuilder,
     private formErrorHandler: FormErrorHandler,
     public progressService: ProgressService,
+    @Inject(MAT_DIALOG_DATA) @Optional() public data: {
+      navigateToListAfterSave: boolean
+    },
     private store: Store) {
     this.reload$.subscribe(() => this.initialize());
+  }
+
+  private get isOpenedInDialog(): boolean {
+    return this.data !== undefined && this.data !== null;
   }
 
   @Select(UserProductCategoriesState.productCategories)
@@ -84,6 +95,13 @@ export class AddNewProductCategoryComponent implements OnInit {
     });
   }
 
+  private get navigateToListAfterSave() {
+    if (this.data)
+      return this.data.navigateToListAfterSave;
+
+    return true;
+  }
+
   public expandAll() {
     this.treeControl.expandAll();
   }
@@ -97,6 +115,14 @@ export class AddNewProductCategoryComponent implements OnInit {
     this.selectedNodeGuid = node.guid;
   }
 
+  public getCategoriesTreeClass() {
+    if (this.isOpenedInDialog) {
+      return 'scroll';
+    }
+    return '';
+  }
+
+
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
   save() {
@@ -104,7 +130,8 @@ export class AddNewProductCategoryComponent implements OnInit {
     if (!request) return;
 
     this.progressService.executeWithProgress(
-      () => this.store.dispatch(new AddNewUserProductCategory(request, false)));
+      () => this.store.dispatch(new AddNewUserProductCategory(request, this.navigateToListAfterSave)));
+    this.categoryAdded.emit();
   }
   
   public saveAndAddNext() {
@@ -113,7 +140,7 @@ export class AddNewProductCategoryComponent implements OnInit {
 
     this.progressService.executeWithProgress(
       () =>
-        this.store.dispatch(new AddNewUserProductCategory(request, true))
+        this.store.dispatch(new AddNewUserProductCategory(request, false))
           .pipe(
           tap(() => this.ngOnInit())
         ));

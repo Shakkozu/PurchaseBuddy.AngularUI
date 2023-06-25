@@ -7,7 +7,7 @@ export class InitializeUserProductCategories {
 
 export class AddNewUserProductCategory {
 	static readonly type = '[UserProductCategories] AddNewUserProductCategory';
-	constructor (public request: CreateProductCategoryRequest, public addNext: boolean) { }
+	constructor (public request: CreateProductCategoryRequest, public navigateToList: boolean) { }
 }
 
 export class AddNewUserProductCategorySuccess {

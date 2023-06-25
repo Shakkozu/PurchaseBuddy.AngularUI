@@ -44,17 +44,17 @@ export class UserProductCategoriesState {
 	@Action(AddNewUserProductCategory)
 	public addNewUserProductCategory(ctx: StateContext<UserProductCategoriesStateModel>, action: AddNewUserProductCategory) {
 		return this.productCategoriesService.addNewUserProductCategory(action.request)
-			.subscribe(response => ctx.dispatch(new AddNewUserProductCategorySuccess(action.addNext)));
+			.subscribe(response => ctx.dispatch(new AddNewUserProductCategorySuccess(action.navigateToList)));
 	}
 
 	@Action(AddNewUserProductCategorySuccess)
-	public addNewUserProductCategorySuccess(ctx: StateContext<UserProductCategoriesStateModel>, { addNext }: AddNewUserProductCategory) {
+	public addNewUserProductCategorySuccess(ctx: StateContext<UserProductCategoriesStateModel>, { navigateToList }: AddNewUserProductCategory) {
 		ctx.dispatch(new InitializeUserProductCategories());
 		this.initializeUserProductCategories
-		if (addNext)
-			ctx.dispatch(new ResetAddCategoryComponent());
-		else
+		if (navigateToList)
 			this.router.navigate(['user-product-categories']);
+		else
+			ctx.dispatch(new ResetAddCategoryComponent());
 	}
 
 	@Action(ResetAddCategoryComponent)

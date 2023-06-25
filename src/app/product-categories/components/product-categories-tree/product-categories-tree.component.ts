@@ -9,13 +9,15 @@ import { UserProductCategoriesState } from '../../store/product-categories-state
 import { InitializeUserProductCategories } from '../../store/product-categories.actions';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
+import { AddNewProductCategoryComponent } from '../add-new-product-category/add-new-product-category.component';
 
 @Component({
   selector: 'app-product-categories-tree',
   templateUrl: './product-categories-tree.component.html',
   styleUrls: ['./product-categories-tree.component.scss']
 })
-  
+
 export class ProductCategoriesTreeComponent {
   public dataForm!: FormGroup;
   public dataSource!: MatTreeFlatDataSource<ProductCategoryNode, ProductCategoryFlatNode>;
@@ -25,7 +27,8 @@ export class ProductCategoriesTreeComponent {
   @Output() categoriesInitialized = new EventEmitter<Array<MicroProductCategory>>();
   @Output() categoryDeselected = new EventEmitter<MicroProductCategory>();
 
-  constructor (private store: Store) {
+  constructor (private store: Store,
+    private dialog: MatDialog) {
     this.ngOnInit();
   }
 
@@ -84,6 +87,15 @@ export class ProductCategoriesTreeComponent {
     node => node.level,
     node => node.expandable,
   );
+
+  public addNewProductCategory() {
+    const dialog = this.dialog.open(AddNewProductCategoryComponent, {
+      data: {
+        navigateToListAfterSave: false
+      }
+    });
+    dialog.componentInstance.categoryAdded.subscribe(() => dialog.close())
+  }
 
   public hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 }
