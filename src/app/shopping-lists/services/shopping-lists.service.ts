@@ -26,10 +26,13 @@ export class ShoppingListsService {
 	}
 
 	public createNew(listItems: string[], assignedShop: string) {
-		const request: CreateShoppingListRequest = {
+		let request: CreateShoppingListRequest = {
 			listItems: listItems,
-			assignedShop: assignedShop,
 		};
+		if (assignedShop)
+			request.assignedShop = assignedShop;
+			
+		console.log(request);
 
 		return this.http.post(this.baseUrl, request);
 	}
