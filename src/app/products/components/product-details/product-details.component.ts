@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -9,9 +9,10 @@ import { ExampleFlatNode, ProductCategoryFlatNode, ProductCategoryNode } from 's
 import { ProductCategoriesService, ProgressService } from 'src/app/product-categories/services/product-categories.service';
 import { FormErrorHandler } from 'src/app/shared/error-handling/form-error-handler';
 import { AddNewUserProduct, UpdateUserProduct } from '../../store/user-products.actions';
-import { OnInit, OnDestroy } from '@angular/core';
+import { OnInit, OnDestroy, Inject, Optional } from '@angular/core';
 import { Subscription, tap } from 'rxjs';
 import { ProductsService } from '../../services/products-service';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-product-details',
@@ -19,7 +20,8 @@ import { ProductsService } from '../../services/products-service';
   styleUrls: ['product-details.component.scss'],
 })
 export class UserProductDetailsComponent implements OnInit, OnDestroy {
-  
+  @Output('productAdded')
+  public productAdded: EventEmitter<string> = new EventEmitter<string>();
   checklistSelection = new SelectionModel<ProductCategoryNode>(true);
   dataForm!: FormGroup;
   public selectedNode!: ProductCategoryNode;
@@ -28,6 +30,7 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
   private routeParamsSubscription!: Subscription;
   private header = 'New Product';
   private productId!: string;
+  public containerStyles: any;
 
   public dataSource!: MatTreeFlatDataSource<ProductCategoryNode, ProductCategoryFlatNode>;
 
@@ -36,12 +39,23 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private formErrorHandler: FormErrorHandler,
     private store: Store,
+    @Inject(MAT_DIALOG_DATA) @Optional() public data: {
+      navigateToListAfterSave: boolean
+    },
     public progressService: ProgressService,
     private activatedRoute: ActivatedRoute) {
       this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
       this.productCategoriesService
         .getCategories()
         .subscribe(categories => this.dataSource.data = categories);
+      this.containerStyles = {
+        margin: this.isOpenedInDialog ? '20px' : '',
+        backgroundColor: 'rgb(255, 252, 248)'
+      };
+    }
+
+  private get isOpenedInDialog(): boolean {
+    return this.data !== undefined && this.data !== null;
   }
 
   public expandAll() {
@@ -50,6 +64,13 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
 
   public collapseAll() {
     this.treeControl.collapseAll();
+  }
+
+  private get navigateToListAfterSave() {
+    if (this.data)
+      return this.data.navigateToListAfterSave;
+    
+    return true;
   }
 
   ngOnInit(): void {
@@ -127,7 +148,9 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
         () => this.store.dispatch(new UpdateUserProduct(this.productId, productName, this.selectedCategoryGuid)));
     } else {      
       this.progressService.executeWithProgress(() =>
-      this.store.dispatch(new AddNewUserProduct(productName, this.selectedCategoryGuid)));
+        this.store.dispatch(new AddNewUserProduct(productName, this.selectedCategoryGuid, this.navigateToListAfterSave)));
+
+      this.productAdded.emit();
     }
   }
 
@@ -139,12 +162,13 @@ export class UserProductDetailsComponent implements OnInit, OnDestroy {
     this.saveOccured = true;
     const productName = this.dataForm.get('productName')?.value;
     this.progressService.executeWithProgress(
-      () => this.store.dispatch(new AddNewUserProduct(productName, this.selectedCategoryGuid, true))
+      () => this.store.dispatch(new AddNewUserProduct(productName, this.selectedCategoryGuid, this.navigateToListAfterSave))
         .pipe(
-          tap(() => this.ngOnInit())
+          tap(() => {
+            this.ngOnInit();
+          })
         )
     );
-    
   }
 
   public getErrorMessage(formControlName: string): string {

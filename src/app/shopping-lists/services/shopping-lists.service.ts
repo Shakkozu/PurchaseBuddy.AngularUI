@@ -28,6 +28,7 @@ export class ShoppingListsService {
 	public createNew(listItems: string[], assignedShop: string) {
 		const request: CreateShoppingListRequest = {
 			listItems: listItems,
+			assignedShop: assignedShop,
 		};
 
 		return this.http.post(this.baseUrl, request);

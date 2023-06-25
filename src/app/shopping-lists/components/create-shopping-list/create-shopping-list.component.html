@@ -39,6 +39,9 @@
       color="primary">Save
     </button>
     <h2>Products</h2>
+    <button (click)="addNewProduct()" style="margin-left:12px" mat-flat-button
+      color="primary">Add new
+    </button>
     <mat-selection-list #shoes (selectionChange)="onSelectionChange($event)">
       <mat-list-option *ngFor="let product of rows" [value]="product" selected="{{isSelected(product)}}">
         {{product.name}}

@@ -5,7 +5,7 @@ export class GetUserProducts {
 
 export class AddNewUserProduct {
 	static readonly type = '[UserProducts] Save user product';
-	constructor (public name: string, public categoryGuid: string, public addNext: boolean = false) { }
+	constructor (public name: string, public categoryGuid: string, public navigateToList: boolean) { }
 }
 
 export class UpdateUserProduct {

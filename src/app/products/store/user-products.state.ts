@@ -50,8 +50,8 @@ export class UserProductsState {
 		return this.productsService.addNewUserProduct({name: action.name, categoryId: action.categoryGuid})
 			.subscribe(() => {
 				ctx.dispatch(new GetUserProducts());
-				if (!action.addNext)
-					this.router.navigate(['user-products']);					
+				if (action.navigateToList)
+					this.router.navigate(['user-products']);
 			});
 	}
 

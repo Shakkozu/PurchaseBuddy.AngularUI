@@ -8,8 +8,8 @@ import { ProgressService } from 'src/app/product-categories/services/product-cat
 import { Router } from '@angular/router';
 import { UserShopsState } from 'src/app/shops/store/user-shops.state';
 import { UserShop } from 'src/app/shops/model';
-
-
+import { MatDialog } from '@angular/material/dialog';
+import { UserProductDetailsComponent } from 'src/app/products/components/product-details/product-details.component';
 
 interface Food {
   value: string;
@@ -23,6 +23,7 @@ interface Food {
 })
 export class CreateShoppingListComponent {
   constructor (private store: Store,
+    private dialog: MatDialog,
     private formBuilder: FormBuilder,
     public progressService: ProgressService,
     private router: Router,
@@ -121,6 +122,15 @@ export class CreateShoppingListComponent {
       .pipe(
         tap(() => this.router.navigate(['shopping-lists'])
         )));
+  }
+
+  public addNewProduct() {
+    const dialog = this.dialog.open(UserProductDetailsComponent, {
+      data: {
+        navigateToListAfterSave: false
+      }
+    });
+    dialog.componentInstance.productAdded.subscribe(() => dialog.close());
   }
 
   public isValid() {

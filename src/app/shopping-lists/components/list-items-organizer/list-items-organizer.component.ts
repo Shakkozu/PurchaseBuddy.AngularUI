@@ -12,7 +12,6 @@ import { Product, UserProductsState } from 'src/app/products/store/user-products
 export class ListItemsOrganizerComponent {
 
   @Input('items')
-
   public selectedItems: Product[] = [];
   public products: Product[] = [];
   public rows: Product[] = [];
