@@ -12,6 +12,7 @@ export interface ShoppingListDto {
 }
 
 export interface ShoppingListItemDto {
+	guid: string;
 	quantity: number;
 	productDto: Product
 	purchased: boolean;

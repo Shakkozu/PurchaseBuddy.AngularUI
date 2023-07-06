@@ -83,11 +83,10 @@ export class ProgressService {
 
 	executeWithProgress<T>(observableFn: () => Observable<T>): any {
 		this.showProgressBar();
-		// wait 3s before showing the progress bar
 		setTimeout(() => {
 			const observable = observableFn();
 			observable.subscribe(() => this.hideProgressBar(), () => this.hideProgressBar());
 			return observable;
-		}, 300);
+		}, 10);
 	}
 }

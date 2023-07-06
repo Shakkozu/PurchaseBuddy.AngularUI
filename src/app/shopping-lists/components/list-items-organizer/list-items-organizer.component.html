@@ -1,12 +1,14 @@
+<mat-progress-bar *ngIf="progressService.visible" mode="indeterminate"></mat-progress-bar>
 <div class="grid__cell">
   <h2>Product On List</h2>
   <mat-list #products class="selection-list">
-    <h4 *ngIf="selectedItems?.length === 0">None of products is selected</h4>
-    <mat-list-item *ngFor="let item of selectedItems">
+    <h4 *ngIf="selectedListItems?.length === 0">None of products is selected</h4>
+    <h4 *ngIf="lastItemLeft()">You cannot remove last item from list!</h4>
+    <mat-list-item *ngFor="let item of selectedListItems">
       <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-        <span style="align-self: flex-start;">{{item.name}}</span>
+        <span style="align-self: flex-start;">{{item.productDto.name}}</span>
         <div>
-          <button (click)="remove(item)" mat-icon-button>
+          <button [disabled]="lastItemLeft()" (click)="removeListItem(item)" mat-icon-button>
             <mat-icon>delete</mat-icon>
           </button>
         </div>
@@ -22,7 +24,7 @@
   </mat-form-field>
   <mat-list #products class="selection-list">
     <h4 *ngIf="getNotAddedProducts().length === 0">There are none left products to add :)</h4>
-    <mat-list-item *ngFor="let item of rows">
+    <mat-list-item *ngFor="let item of notAddedProducts">
       <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
         <span style="align-self: flex-start;">{{item.name}}</span>
         <div>

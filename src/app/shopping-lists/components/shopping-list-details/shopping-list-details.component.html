@@ -1,14 +1,16 @@
+<mat-progress-bar *ngIf="progressService.visible" mode="indeterminate"></mat-progress-bar>
 <div style="display: flex; align-items: center; width: 100%;">
   <span style="align-self: flex-start;">
     <h2>Shopping List</h2>
   </span>
 </div>
 <button mat-button mat-flat-button color="primary" style="margin: 8px"
- *ngIf="!shoppingCompleted"
-  (click)="onEditButtonClicked()">{{isInEditMode ? 'Cancel' : 'Edit' }}
+ *ngIf="!shoppingCompleted && !isInEditMode"
+  (click)="onEditModeEntered()">{{ 'Edit' }}
 </button>
-<button *ngIf="isInEditMode" [disabled]="!canUpdateList" mat-button mat-flat-button color="primary" style="margin: 8px"
-  (click)="onUpdateListButtonClicked()">Update List
+<button mat-button mat-flat-button color="primary" style="margin: 8px"
+ *ngIf="!shoppingCompleted && isInEditMode"
+  (click)="onEditCompleted()">{{ 'Return' }}
 </button>
 <app-list-items-organizer [hidden]="!isInEditMode" #organizer>
 </app-list-items-organizer>

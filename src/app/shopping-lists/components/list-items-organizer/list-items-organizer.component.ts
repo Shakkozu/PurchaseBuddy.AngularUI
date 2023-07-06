@@ -1,25 +1,41 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngxs/store';
-import { startWith, map, Observable } from 'rxjs';
+import { startWith, map, Observable, takeUntil, Subject, of } from 'rxjs';
+import { ProgressService } from 'src/app/product-categories/services/product-categories.service';
 import { Product, UserProductsState } from 'src/app/products/store/user-products.state';
+import { AddNewListItemRequest, ShoppingListsService } from '../../services/shopping-lists.service';
+import { ShoppingListItemDto } from '../../model';
+import { v4 as uuidv4 } from 'uuid';
+import { SorterHelper } from 'src/app/shared/utils/sorter';
 
 @Component({
   selector: 'app-list-items-organizer',
   templateUrl: './list-items-organizer.component.html',
-  styleUrls: ['./list-items-organizer.component.scss']
+  styleUrls: ['./list-items-organizer.component.scss'],
+  providers: [ProgressService]
 })
-export class ListItemsOrganizerComponent {
-
+export class ListItemsOrganizerComponent implements OnDestroy {
   @Input('items')
   public selectedItems: Product[] = [];
+  public selectedListItems: ShoppingListItemDto[] = [];
   public products: Product[] = [];
-  public rows: Product[] = [];
+  public notAddedProducts: Product[] = [];
   public search: string = '';
+  public touched: boolean = false;
   myControl = new FormControl('');
   filteredOptions: Observable<Product[]> | undefined;
+  listId: any;
+  private destroy$: Subject<void> = new Subject<void>();
 
-  constructor (private store: Store) {
+  constructor (private store: Store,
+    private shoppingListService: ShoppingListsService,
+    public progressService: ProgressService) {
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private _filter(value: string): Product[] {
@@ -29,11 +45,16 @@ export class ListItemsOrganizerComponent {
       .includes(filterValue));
   }
 
+  public lastItemLeft() {
+    return this.selectedListItems.length <= 1;
+  }
+
   ngOnInit() {
     this.store.select(UserProductsState.products).subscribe(products => {
       this.products = products;
-      this.rows = products;
+      this.notAddedProducts = SorterHelper.sort(products, 'name');
     });
+    this.progressService.resetProgressBar();
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
@@ -42,20 +63,26 @@ export class ListItemsOrganizerComponent {
 
   public updateFilter(event: any) {
     const val = event.target.value.toLowerCase();
-    this.rows = this.products.filter(function (d: any) {
+    this.notAddedProducts = this.products.filter(function (d: any) {
       return d.name.toLowerCase().indexOf(val) !== -1 || !val;
     });
+    this.notAddedProducts = SorterHelper.sort(this.notAddedProducts, 'name');
   }
 
   private refreshAvailableProductsList() {
     const val = this.search.toLowerCase();
-    this.rows = this.products.filter(function (d: any) {
+    this.notAddedProducts = this.products.filter(function (d: any) {
       return d.name.toLowerCase().indexOf(val) !== -1 || !val;
     });
+    this.notAddedProducts = SorterHelper.sort(this.notAddedProducts, 'name');
   }
 
   public isSelected(product: Product) {
     return this.selectedItems.find(s => s.guid === product.guid) !== undefined;
+  }
+
+  public isSelectedListItem(listItem: ShoppingListItemDto) {
+    return this.selectedListItems.find(item => item.guid === listItem.guid) !== undefined;
   }
 
   public onSelectionChange(event: any) {
@@ -73,29 +100,67 @@ export class ListItemsOrganizerComponent {
   public isValid(): boolean {
     return this.selectedItems.length > 0;
   }
-
-  public getSelectedProducts() {
-    return [...this.selectedItems];
-  }
   
   public getNotAddedProducts() {
     return [...this.products];
   }
-
-  public addItems(productsGuids: Array<string>) {
-    const productsToAdd = this.products.filter(product => productsGuids.some(guid => product.guid == guid));
-    productsToAdd.forEach(product => this.addNewListItem(product));
+  
+  public addListItems(listItems: Array<ShoppingListItemDto>) {
+    this.selectedListItems.push(...listItems);
   }
 
-  public remove(product: Product) {
-    this.products.push(product);
-    this.selectedItems = this.selectedItems.filter(item => item.guid !== product.guid);
-    this.refreshAvailableProductsList();
+  private refreshProducts() {
+    const productsOnList = this.selectedListItems.map(items => items.productDto);
+    const productsOnListGuids = productsOnList.map(p => p.guid);
+    this.notAddedProducts = this.products.filter(product => !productsOnListGuids.some(guid => product.guid === guid));
   }
 
+  initialize(listItems: ShoppingListItemDto[], listId: any) {
+    this.selectedListItems = [...listItems];
+    this.listId = listId;
+    this.refreshProducts();
+    this.touched = false;
+  }
+
+  public removeListItem(listItem: ShoppingListItemDto) {
+    this.touched = true;
+    this.progressService.executeWithProgress(() => {
+      return of(this.shoppingListService.removeListItem(this.listId, listItem.guid)
+        .pipe(
+          takeUntil(this.destroy$)).subscribe(_ => {
+            this.selectedListItems = this.selectedListItems.filter(item => item.guid !== listItem.guid);
+            this.refreshAvailableProductsList();
+            this.refreshProducts();
+          }))
+    });
+  }
+  
   public addNewListItem(product: Product) {
-    this.selectedItems.push(product);
-    this.products = this.products.filter(p => p.guid !== product.guid);
-    this.refreshAvailableProductsList();
+    this.touched = true;
+    const listItem: ShoppingListItemDto = {
+      guid: uuidv4(),
+      productDto: {
+        guid: product.guid,
+        name: product.name,
+        categoryName: product.categoryName,
+        categoryId: product.categoryId
+      },
+      purchased: false,
+      quantity: 1,
+      unavailable: false
+    };
+    const request: AddNewListItemRequest = {
+      listItemGuid: listItem.guid,
+      productGuid: product.guid,
+    };
+    this.progressService.executeWithProgress(() => {
+      return of(this.shoppingListService.addNewListItem(this.listId, request)
+        .pipe(
+          takeUntil(this.destroy$)).subscribe(_ => {
+            this.selectedListItems.push(listItem);
+            this.refreshAvailableProductsList();
+            this.refreshProducts();
+          }))
+    });
   }
 }

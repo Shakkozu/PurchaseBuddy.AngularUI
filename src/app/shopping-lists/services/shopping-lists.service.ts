@@ -12,15 +12,6 @@ export class ShoppingListsService {
 	constructor (private http: HttpClient) {
 	}
 	
-	public updateItemsOnList(listId: any, selectedProducts: string[]) {
-		const request: UpdateShoppingListProductsRequest = {
-			listItems: selectedProducts
-		};
-		console.log(request);
-
-		return this.http.patch(`${this.baseUrl}${listId}/products`, request);
-	}
-
 	public getNotCompletedLists() {
 		return this.http.get<ShoppingListDto[]>(this.baseUrl)
 	}
@@ -42,17 +33,35 @@ export class ShoppingListsService {
 	}
 
 	markAsPurchased(listId: string, productId: string) {
-		return this.http.put(this.baseUrl + `${ listId }/products/${ productId }/mark-as-purchased`, null);
+		return this.http.put(this.baseUrl + `${ listId }/list-items/${ productId }/mark-as-purchased`, null);
 	}
 
 	markAsNotPurchased(listId: string, productId: string) {
-		return this.http.put(this.baseUrl + `${ listId}/products/${productId}/mark-as-not-purchased`, null);
+		return this.http.put(this.baseUrl + `${ listId}/list-items/${productId}/mark-as-not-purchased`, null);
+	}
+	
+	
+	addNewListItem(listId: string, request: AddNewListItemRequest) {
+		return this.http.post(this.baseUrl + `${ listId }/list-items`, request);
+	}
+	
+	removeListItem(listId: string, listItemId: string) {
+		return this.http.delete(this.baseUrl + `${ listId }/list-items/${listItemId}`);
 	}
 }
 
 export interface CreateShoppingListRequest {
 	listItems: string[];
 	assignedShop?: string | null;
+}
+
+
+export interface AddNewListItemRequest {
+	listItemGuid: string;
+	productGuid?: string;
+	productName?: string;
+	productCategoryName?: string;
+	quantity?: number;
 }
 
 export interface UpdateShoppingListProductsRequest {
