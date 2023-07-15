@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { of } from 'rxjs';
+import { of, share } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ShoppingListsService } from '../../services/shopping-lists.service';
+import { ShoppingListsService, ShoppingListsSharingService } from '../../services/shopping-lists.service';
 import { ShoppingListDto as ShoppingList, ShoppingListItemDto } from '../../model';
 import { UserShopDto } from 'src/app/shops/model';
 import { ListItemsOrganizerComponent } from '../list-items-organizer/list-items-organizer.component';
 import { ProgressService } from 'src/app/product-categories/services/product-categories.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-shopping-list-details',
@@ -27,6 +29,8 @@ export class ShoppingListDetailsComponent implements OnInit {
   constructor (private router: Router,
     private route: ActivatedRoute,
     private shoppingService: ShoppingListsService,
+    private shoppingListSharingService: ShoppingListsSharingService,
+    private snackBar: MatSnackBar,
     public progressService: ProgressService) {
   }
 
@@ -46,6 +50,23 @@ export class ShoppingListDetailsComponent implements OnInit {
   public onEditModeEntered() {
     this.isInEditMode = !this.isInEditMode;
     this.organizer?.initialize(this.allListItems, this.listId);
+  }
+  
+  public onShareButtonClicked() {
+    this.progressService.executeWithProgress(() => {
+      return of(this.shoppingListSharingService.shareShoppingList(this.listId)
+        .subscribe(sharedResourceId => {
+          console.log(sharedResourceId);
+          const contentToCopy = window.location.origin + `/shopping-lists/import-shared/${sharedResourceId}`;
+          navigator.clipboard.writeText(contentToCopy)
+            .then(() => {
+              this.snackBar.open("Link to sharing shopping list was copied to clipboard");
+            })
+            .catch((error) => {
+              console.error('Failed to copy content:', error);
+            });
+        }))
+    });
   }
   
   public onEditCompleted() {

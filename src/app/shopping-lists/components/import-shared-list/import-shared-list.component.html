@@ -1,0 +1,9 @@
+<h2>import-shared-list works!</h2>
+<p>You are importing list {{listId}}, do you want to proceed?</p>
+<mat-list>
+      <mat-list-item *ngFor="let listItem of details?.items" class="not-purchased-item">
+		<p><b>{{getDescription(listItem)}}</b></p>
+      </mat-list-item>
+    </mat-list>
+<button>cancel</button>
+<button>proceed</button>

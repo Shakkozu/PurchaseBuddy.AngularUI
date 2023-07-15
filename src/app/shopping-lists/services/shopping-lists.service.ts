@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { ShoppingListDto } from "../model";
 import { environment } from "src/environments/environment";
+import { Observable } from "rxjs";
 
 @Injectable({
 	providedIn: 'root'
@@ -32,8 +33,8 @@ export class ShoppingListsService {
 		return this.http.get<ShoppingListDto>(this.baseUrl + listId )
 	}
 
-	markAsPurchased(listId: string, productId: string) {
-		return this.http.put(this.baseUrl + `${ listId }/list-items/${ productId }/mark-as-purchased`, null);
+	markAsPurchased(listId: string, listItemId: string) {
+		return this.http.put(this.baseUrl + `${ listId }/list-items/${ listItemId }/mark-as-purchased`, null);
 	}
 
 	markAsNotPurchased(listId: string, productId: string) {
@@ -48,6 +49,36 @@ export class ShoppingListsService {
 	removeListItem(listId: string, listItemId: string) {
 		return this.http.delete(this.baseUrl + `${ listId }/list-items/${listItemId}`);
 	}
+}
+
+@Injectable({
+	providedIn: 'root'
+})
+export class ShoppingListsSharingService {
+	private readonly baseUrl = environment.apiUrl + 'shared-shopping-lists/';
+	
+	constructor (private http: HttpClient) {
+	}
+	
+	public shareShoppingList(listId: string): Observable<string> {
+		return this.http.put<string>(this.baseUrl + `${ listId }/share`, null);
+	}
+	
+	public getDetails(listId: string): Observable<SharedShoppingListDto> {
+		return this.http.get<SharedShoppingListDto>(this.baseUrl + `${ listId }`);
+	}
+}
+
+export interface SharedShoppingListDto {
+	createdAt: Date;
+	creatorId: string;
+	sourceId: string;
+	guid: string;
+	items: SharedShoppingListItemDto[];
+}
+export interface SharedShoppingListItemDto {
+	productName: string;
+	productCategory?: string;
 }
 
 export interface CreateShoppingListRequest {

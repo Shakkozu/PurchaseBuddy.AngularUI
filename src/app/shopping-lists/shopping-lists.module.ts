@@ -8,6 +8,7 @@ import { CreateShoppingListComponent } from './components/create-shopping-list/c
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShoppingListDetailsComponent } from './components/shopping-list-details/shopping-list-details.component';
 import { ListItemsOrganizerComponent } from './components/list-items-organizer/list-items-organizer.component';
+import { ImportSharedListComponent } from './components/import-shared-list/import-shared-list.component';
 
 
 
@@ -16,7 +17,8 @@ import { ListItemsOrganizerComponent } from './components/list-items-organizer/l
     ShoppingListsComponent,
     CreateShoppingListComponent,
     ShoppingListDetailsComponent,
-    ListItemsOrganizerComponent
+    ListItemsOrganizerComponent,
+    ImportSharedListComponent
   ],
   imports: [
     ShoppingListsRoutingModule,
