@@ -32,8 +32,8 @@ export class ShoppingListsService {
 		return this.http.get<ShoppingListDto>(this.baseUrl + listId )
 	}
 
-	markAsPurchased(listId: string, productId: string) {
-		return this.http.put(this.baseUrl + `${ listId }/list-items/${ productId }/mark-as-purchased`, null);
+	markAsPurchased(listId: string, listItemId: string) {
+		return this.http.put(this.baseUrl + `${ listId }/list-items/${ listItemId }/mark-as-purchased`, null);
 	}
 
 	markAsNotPurchased(listId: string, productId: string) {
