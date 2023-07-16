@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { of, share } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ShoppingListsService, ShoppingListsSharingService } from '../../services/shopping-lists.service';
+import { ShoppingListsService } from '../../services/shopping-lists.service';
+import { ShoppingListsSharingService } from "../../services/shared-shopping-lists-service";
 import { ShoppingListDto as ShoppingList, ShoppingListItemDto } from '../../model';
 import { UserShopDto } from 'src/app/shops/model';
 import { ListItemsOrganizerComponent } from '../list-items-organizer/list-items-organizer.component';
@@ -60,7 +61,9 @@ export class ShoppingListDetailsComponent implements OnInit {
           const contentToCopy = window.location.origin + `/shopping-lists/import-shared/${sharedResourceId}`;
           navigator.clipboard.writeText(contentToCopy)
             .then(() => {
-              this.snackBar.open("Link to sharing shopping list was copied to clipboard");
+              this.snackBar.open("Link to sharing shopping list was copied to clipboard", undefined, {
+                duration: 2000
+              });
             })
             .catch((error) => {
               console.error('Failed to copy content:', error);

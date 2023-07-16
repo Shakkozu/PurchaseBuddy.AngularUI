@@ -12,7 +12,6 @@
  *ngIf="!shoppingCompleted && !isInEditMode"
   (click)="onShareButtonClicked()">{{ 'Share' }}
 </button>
-<a href="fb-messenger://share/?link=https://example.com">Send via messenger</a>
 <button mat-button mat-flat-button color="primary" style="margin: 8px"
  *ngIf="!shoppingCompleted && isInEditMode"
   (click)="onEditCompleted()">{{ 'Return' }}

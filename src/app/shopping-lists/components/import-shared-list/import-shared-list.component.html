@@ -1,9 +1,17 @@
-<h2>import-shared-list works!</h2>
-<p>You are importing list {{listId}}, do you want to proceed?</p>
-<mat-list>
-      <mat-list-item *ngFor="let listItem of details?.items" class="not-purchased-item">
-		<p><b>{{getDescription(listItem)}}</b></p>
-      </mat-list-item>
-    </mat-list>
-<button>cancel</button>
-<button>proceed</button>
+<mat-progress-bar *ngIf="progressService.visible" mode="indeterminate"></mat-progress-bar>
+<div class="container grid 2/5--desk">
+   <div class="grid__cell">
+   <p><b>You are importing other user shopping list, do you want to proceed?</b></p>
+   <h2>Products:</h2>
+   <mat-list>
+         <mat-list-item *ngFor="let listItem of details?.items" class="item-to-import">
+            <span matListItemTitle>{{listItem.productName}}</span>
+            <span matListItemLine>{{listItem.categoryName}}</span>
+         </mat-list-item>
+      </mat-list>
+   <button mat-button mat-flat-button color="primary" style="margin: 8px"
+   (click)="onImportCancelledClicked()">Cancel</button>
+   <button [disabled]="!importButtonEnabled" style="margin: 8px" mat-button mat-flat-button color="primary"
+   (click)="onImportButtonClicked()">Import</button>
+   </div>
+</div>
