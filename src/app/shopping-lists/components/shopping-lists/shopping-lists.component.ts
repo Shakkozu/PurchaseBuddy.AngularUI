@@ -17,14 +17,27 @@ export class ShoppingListsComponent {
   public columns = [{ prop: 'Created at' }, { prop: 'Assigned shop', name: 'AssignedShop' }];
   public ColumnMode = ColumnMode;
   public shoppingLists: ShoppingListDto[] = [];
+  private showOnlyActiveLists = true;
 
   constructor (shoppingListsService: ShoppingListsService,
     private router: Router) {
-    shoppingListsService.getNotCompletedLists()
+    shoppingListsService.getAllShoppingLists()
       .subscribe(lists => {
         const sorted = lists.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.completedAt).getTime());
         this.shoppingLists = sorted;
       });
+  }
+
+  public get filteredShoppingLists(): ShoppingListDto[] {
+    if (!this.showOnlyActiveLists)
+      return this.shoppingLists;
+
+    return this.shoppingLists.filter(list => list.completedAt === null)
+
+  }
+
+  public onChipSelectionChange(chip: any) {
+    this.showOnlyActiveLists = chip.value === 'Active';
   }
 
   public addNew() {
@@ -62,7 +75,7 @@ export class ShoppingListsComponent {
     if (elapsedSeconds < 60)
       return `${ elapsedSeconds } seconds ago`;
     if (elapsedMinutes < 60) {
-      return `${ elapsedMinutes } minutes ago`;
+      return `${ elapsedMinutes } mins ago`;
     } else if (elapsedHours < 24) {
       return `${ elapsedHours } hours ago`;
     } else if (elapsedDays < 30) {

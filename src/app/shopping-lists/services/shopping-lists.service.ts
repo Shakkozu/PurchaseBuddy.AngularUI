@@ -13,7 +13,7 @@ export class ShoppingListsService {
 	constructor (private http: HttpClient) {
 	}
 	
-	public getNotCompletedLists() {
+	public getAllShoppingLists() {
 		return this.http.get<ShoppingListDto[]>(this.baseUrl)
 	}
 

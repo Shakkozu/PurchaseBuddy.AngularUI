@@ -1,20 +1,28 @@
 <div class="grid">
   <div class="grid grid__cell">
+    <mat-chip-listbox aria-label="Filter" selection (change)="onChipSelectionChange($event)">
+      <mat-chip-option selected>Active</mat-chip-option>
+    </mat-chip-listbox>
     <button mat-flat-button class="save-button" style="margin-bottom: 16px" color="primary" (click)="addNew()">
       Add new
     </button>
   </div>
   <div class="grid__cell 1/2--desk">
     <ngx-datatable #table class="material" [columns]="columns" [columnMode]="ColumnMode.force" [headerHeight]="50"
-      [footerHeight]="50" rowHeight="auto" [limit]="10" [rows]="shoppingLists">
-      <ngx-datatable-column name="Created at" prop="name">
+      [footerHeight]="50" rowHeight="auto" [limit]="10" [rows]="filteredShoppingLists">
+      <ngx-datatable-column name="Created at" prop="createdAt">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <button mat-button [routerLink]="['/shopping-list', row.guid]">{{getTimeElapsed(row.createdAt)}}</button>
+          <button class="createdAtButton" mat-button [routerLink]="['/shopping-list', row.guid]">{{getTimeElapsed(row.createdAt)}}</button>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Assigned shop" prop="assignedShop">
+      <ngx-datatable-column name="Shop" prop="assignedShop">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <p>{{getAssignedShopName(row)}}</p>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Completed" prop="completedAt">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <mat-icon *ngIf="row.completedAt">check</mat-icon>
         </ng-template>
       </ngx-datatable-column>
     </ngx-datatable>
