@@ -9,6 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShoppingListDetailsComponent } from './components/shopping-list-details/shopping-list-details.component';
 import { ListItemsOrganizerComponent } from './components/list-items-organizer/list-items-organizer.component';
 import { ImportSharedListComponent } from './components/import-shared-list/import-shared-list.component';
+import { InviteUsersToEditComponent } from './components/invite-users-to-edit/invite-users-to-edit.component';
+import { ViewPendingInvitationsComponent } from './components/view-pending-invitations/view-pending-invitations.component';
 
 
 
@@ -18,7 +20,9 @@ import { ImportSharedListComponent } from './components/import-shared-list/impor
     CreateShoppingListComponent,
     ShoppingListDetailsComponent,
     ListItemsOrganizerComponent,
-    ImportSharedListComponent
+    ImportSharedListComponent,
+    InviteUsersToEditComponent,
+    ViewPendingInvitationsComponent
   ],
   imports: [
     ShoppingListsRoutingModule,

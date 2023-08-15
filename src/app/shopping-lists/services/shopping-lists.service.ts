@@ -24,9 +24,7 @@ export class ShoppingListsService {
 		if (assignedShop)
 			request.assignedShop = assignedShop;
 			
-		console.log(request);
-
-		return this.http.post(this.baseUrl, request);
+		return this.http.post<string>(this.baseUrl, request);
 	}
 
 	getShoppingListDetails(listId: any) {
@@ -72,6 +70,7 @@ export class ShoppingListsSharingService {
 export interface SharedShoppingListDto {
 	createdAt: Date;
 	creatorId: string;
+	creatorName: string;
 	sourceId: string;
 	guid: string;
 	items: SharedShoppingListItemDto[];

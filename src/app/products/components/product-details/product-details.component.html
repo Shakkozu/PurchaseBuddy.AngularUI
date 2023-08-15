@@ -1,4 +1,4 @@
-<div class="product-details-container" [ngStyle]="containerStyles">
+<div [ngStyle]="containerStyles">
   <mat-progress-bar *ngIf="progressService.visible" mode="indeterminate"></mat-progress-bar>
   <h2>{{getHeader()}}</h2>
   <div class="grid">

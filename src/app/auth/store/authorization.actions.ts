@@ -2,7 +2,7 @@ import { IUserDto } from "..";
 
 export class OnLoginSuccess {
 	static readonly type = '[UserSession] Create session';
-	constructor (public username: string, public sessionId: string) { }
+	constructor (public username: string, public sessionId: string, public userId: string) { }
 }
 
 export class Logout {

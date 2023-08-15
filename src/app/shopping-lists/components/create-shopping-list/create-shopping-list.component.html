@@ -13,6 +13,16 @@
         </mat-select>
       </mat-form-field>
     </div>
+    <div class="3/4--desk grid__cell">
+      <mat-form-field appearance="fill">
+        <mat-label>Assigned User</mat-label>
+        <mat-select formControlName="assignedUser">
+          <mat-option *ngFor="let user of users" [value]="user.guid">
+            {{user.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </form>
   <div class="grid__cell 1/2--desk">
     <h2>Product List</h2>

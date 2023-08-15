@@ -9,6 +9,9 @@ import { ListItemsOrganizerComponent } from '../list-items-organizer/list-items-
 import { ProgressService } from 'src/app/product-categories/services/product-categories.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { InviteUsersToEditComponent } from '../invite-users-to-edit/invite-users-to-edit.component';
+import { Store } from '@ngxs/store';
+import { AuthorizationState } from 'src/app/auth/store/authorization.state';
 
 @Component({
   selector: 'app-shopping-list-details',
@@ -26,12 +29,15 @@ export class ShoppingListDetailsComponent implements OnInit {
   public shoppingListDetails!: ShoppingList;
   public isInEditMode: boolean = false;
   private allListItems: Array<ShoppingListItemDto> = [];
+  private userId: string = '';
 
   constructor (private router: Router,
+    private dialog: MatDialog,
     private route: ActivatedRoute,
     private shoppingService: ShoppingListsService,
     private shoppingListSharingService: ShoppingListsSharingService,
     private snackBar: MatSnackBar,
+    private store: Store,
     public progressService: ProgressService) {
   }
 
@@ -43,9 +49,18 @@ export class ShoppingListDetailsComponent implements OnInit {
     return this.notPurchased.length < 1; 
   }
   
+  public get userIsCreator(): boolean {
+    return this.userId === this.shoppingListDetails?.creatorId;
+  }
+  
   public ngOnInit(): void {
     this.listId = this.route.snapshot.paramMap.get('id');
     this.refresh();
+    this.store.select(AuthorizationState.userId)
+      .subscribe(userId => {
+        this.userId = userId ?? '';
+        console.log(userId);
+      });
   }
 
   public onEditModeEntered() {
@@ -69,6 +84,14 @@ export class ShoppingListDetailsComponent implements OnInit {
               console.error('Failed to copy content:', error);
             });
         }))
+    });
+  }
+
+  public onAllowOtherUsersToEditButtonClicked() {
+    this.dialog.open(InviteUsersToEditComponent, {
+      data: {
+        listId: this.listId,
+      }
     });
   }
   

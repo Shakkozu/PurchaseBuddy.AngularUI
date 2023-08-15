@@ -2,7 +2,8 @@ import { Product } from "../products/store/user-products.state";
 import { UserShopDto } from "../shops/model";
 
 export interface ShoppingListDto {
-	userId: string;
+	creatorId: string;
+	creatorName: string;
 	guid: string;
 	assignedShop: UserShopDto,
 	completed: boolean;

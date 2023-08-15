@@ -1,0 +1,21 @@
+<div class="container" style="margin: 20px;">
+
+	<h2>Pending Shopping Invitations</h2>
+	<mat-list>
+		<mat-list-item style="padding: 0;" *ngFor="let invite of invitations">
+			<div style="display: flex; scale:0.8; margin-right: 20px; justify-content: space-between; width: 100%;">
+				<span>[{{getTimeElapsed(invite.createdAt)}}] {{invite.listCreatorName}}</span>
+				<div>
+					<button (click)="reject(invite)" mat-icon-button>
+						<mat-icon>delete</mat-icon>
+					</button>
+					<button (click)="accept(invite)" mat-icon-button>
+						<mat-icon>check</mat-icon>
+					</button>
+				</div>
+			</div>
+		</mat-list-item>
+	</mat-list>
+
+	<button mat-flat-button color="primary" (click)="closeDialog()">Close</button>
+</div>

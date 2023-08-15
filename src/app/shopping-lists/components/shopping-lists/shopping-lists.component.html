@@ -6,6 +6,10 @@
     <button mat-flat-button class="save-button" style="margin-bottom: 16px" color="primary" (click)="addNew()">
       Add new
     </button>
+    <button mat-flat-button style="margin-left: 8px; margin-bottom: 16px" color="primary"
+        (click)="viewPendingInvitations()"
+    >View Invitations ({{invitations.length}})
+    </button>
   </div>
   <div class="grid__cell 1/2--desk">
     <ngx-datatable #table class="material" [columns]="columns" [columnMode]="ColumnMode.force" [headerHeight]="50"
@@ -23,6 +27,11 @@
       <ngx-datatable-column name="Completed" prop="completedAt">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <mat-icon *ngIf="row.completedAt">check</mat-icon>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Owner" prop="creatorName">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <p>{{getCreatorName(row.creatorName)}}</p>
         </ng-template>
       </ngx-datatable-column>
     </ngx-datatable>

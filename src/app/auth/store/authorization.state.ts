@@ -7,11 +7,13 @@ import { OnLoginSuccess, Login, Register, Logout, OnLogoutSuccess } from "./auth
 
 export interface UserSessionStateModel {
 	username?: string;
+	userId?: string;
 	sessionId?: string;
 }
 
 const defaultState: UserSessionStateModel = {
 	username: undefined,
+	userId: undefined,
 	sessionId: undefined
 }
 
@@ -35,9 +37,10 @@ export class AuthorizationState {
 
 	@Action(OnLoginSuccess)
 	public createUserSession({ patchState }: StateContext<UserSessionStateModel>,
-		{ username, sessionId }: OnLoginSuccess) {
+		{ username, sessionId, userId }: OnLoginSuccess) {
 		patchState({
 			username: username,
+			userId: userId,
 			sessionId: sessionId,
 		});
 		this.router.navigate(['/user-products']);
@@ -47,7 +50,7 @@ export class AuthorizationState {
 	public login(ctx: StateContext<UserSessionStateModel>,
 		{ username, password }: Login) {
 		this.authorizationService.login(username, password)
-			.subscribe(sessionId => ctx.dispatch(new OnLoginSuccess(username, sessionId)));
+			.subscribe(response => ctx.dispatch(new OnLoginSuccess(username, response.sessionId, response.userId )));
 	}
 	
 	@Action(Register)
@@ -81,6 +84,11 @@ export class AuthorizationState {
 	@Selector()
 	static userSessionId(state: UserSessionStateModel) {
 	  return state.sessionId;
+	}
+
+	@Selector()
+	static userId(state: UserSessionStateModel) {
+	  return state.userId;
 	}
 	
 	@Selector()

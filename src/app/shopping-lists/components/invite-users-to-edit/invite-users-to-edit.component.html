@@ -1,0 +1,26 @@
+<div style="padding: 10px;">
+
+
+	<h1 mat-dialog-title>Invite user to modify list</h1>
+
+	<form mat-form [formGroup]="dataForm">
+		<div class="3/4--desk grid__cell">
+			<mat-form-field appearance="fill">
+				<mat-label>Selected User</mat-label>
+				<mat-select formControlName="selectedUser">
+					<mat-option *ngFor="let user of users" [value]="user.guid">
+						{{user.name}}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+	</form>
+
+
+	<button mat-button mat-flat-button color="primary" style="margin: 8px"
+	 	(click)="closeDialog()">{{ 'Cancel' }}
+	</button>
+	<button mat-button mat-flat-button color="primary" style="margin: 8px"
+		[disabled]="!userSelected"
+		 (click)="confirm()">{{ 'Confirm' }}
+	</button>

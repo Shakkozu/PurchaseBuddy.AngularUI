@@ -12,13 +12,13 @@ export class AuthorizationService {
 	constructor (private httpClient: HttpClient) {	
 	}
 
-	public login(username: string, password: string): Observable<string> {
+	public login(username: string, password: string): Observable<LoginResponse> {
 		const body = {
 			login: username,
 			password: password
 		};
 
-		return this.httpClient.post<string>(this.baseUrl + 'login', body);
+		return this.httpClient.post<LoginResponse>(this.baseUrl + 'login', body);
 	}
 
 	public register(userDto: IUserDto): Observable<string> {
@@ -28,4 +28,9 @@ export class AuthorizationService {
 	public logout(sessionId: string) {
 		return this.httpClient.post<string>(this.baseUrl + 'logout', sessionId);
 	}
+}
+
+export interface LoginResponse {
+	sessionId: string;
+	userId: string;
 }

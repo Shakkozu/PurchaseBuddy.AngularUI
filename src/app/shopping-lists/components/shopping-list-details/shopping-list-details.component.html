@@ -13,6 +13,10 @@
   (click)="onShareButtonClicked()">{{ 'Share' }}
 </button>
 <button mat-button mat-flat-button color="primary" style="margin: 8px"
+ *ngIf="!shoppingCompleted && !isInEditMode && userIsCreator"
+  (click)="onAllowOtherUsersToEditButtonClicked()">{{ 'Invite other user to edit' }}
+</button>
+<button mat-button mat-flat-button color="primary" style="margin: 8px"
  *ngIf="!shoppingCompleted && isInEditMode"
   (click)="onEditCompleted()">{{ 'Return' }}
 </button>

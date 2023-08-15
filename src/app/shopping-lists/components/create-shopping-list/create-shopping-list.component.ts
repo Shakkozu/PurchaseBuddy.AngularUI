@@ -1,15 +1,17 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngxs/store';
-import { Observable, map, startWith, tap } from 'rxjs';
+import { Observable, map, of, startWith, switchMap, tap } from 'rxjs';
 import { Product, UserProductsState } from 'src/app/products/store/user-products.state';
 import { ShoppingListsService } from '../../services/shopping-lists.service';
 import { ProgressService } from 'src/app/product-categories/services/product-categories.service';
 import { Router } from '@angular/router';
-import { UserShopsState } from 'src/app/shops/store/user-shops.state';
 import { UserShop } from 'src/app/shops/model';
 import { MatDialog } from '@angular/material/dialog';
 import { UserProductDetailsComponent } from 'src/app/products/components/product-details/product-details.component';
+import { UserDto, UsersService } from 'src/app/crm/services/users-service';
+import { ShoppingListsInvitationsService } from '../../invitations/services/shopping-list-invitations.service';
+import { ShopService } from 'src/app/shops/services/shop-service';
 
 interface Food {
   value: string;
@@ -27,7 +29,10 @@ export class CreateShoppingListComponent {
     private formBuilder: FormBuilder,
     public progressService: ProgressService,
     private router: Router,
-    private shoppingListService: ShoppingListsService) {
+    private usersService: UsersService,
+    private shopsService: ShopService,
+    private shoppingListService: ShoppingListsService,
+    private invitationsService: ShoppingListsInvitationsService) {
     }
     
   public shops: UserShop[] = [];
@@ -40,27 +45,25 @@ export class CreateShoppingListComponent {
   quantity = new FormControl('');
   selectedItems: Product[] = [];
   public search: string = '';
+  public users: UserDto[] = [];
 
   ngOnInit() {
     this.dataForm = this.formBuilder.group({
       assignedShop: new FormControl(''),
+      assignedUser: new FormControl(''),
     });
+    this.usersService.getAllUsers().subscribe(users => this.users = users);
 
     this.store.select(UserProductsState.products).subscribe(products => {
       this.products = products;
       this.rows = products;
     });
 
-    this.store.select(UserShopsState.shops)
-      .subscribe(shops => {
-        console.log(shops);
-        this.shops = shops
-      });
+    this.shopsService.getUserShops().subscribe(shops => this.shops = shops);
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
     );
-    this.selectedProduct.valueChanges.subscribe(v => console.log(v));
   }
 
   private _filter(value: string): Product[] {
@@ -118,10 +121,20 @@ export class CreateShoppingListComponent {
       return;
     }
     const assignedShopId = this.dataForm.get('assignedShop')?.value;
-    this.progressService.executeWithProgress(() => this.shoppingListService.createNew(listItems, assignedShopId)
-      .pipe(
+    const assignedUserId = this.dataForm.get('assignedUser')?.value;
+    
+    this.progressService.executeWithProgress(() =>
+      this.shoppingListService.createNew(listItems, assignedShopId).pipe(
+        switchMap(createdListId => {
+          if(assignedUserId.length > 0)
+            return this.invitationsService.inviteUserToPurchase(createdListId, assignedUserId)
+
+          return of('skipping inviting')
+        })
+      ).pipe(
         tap(() => this.router.navigate(['shopping-lists'])
-        )));
+        )
+      ));
   }
 
   public addNewProduct() {
