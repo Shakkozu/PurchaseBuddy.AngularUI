@@ -8,6 +8,8 @@ import { AddNewListItemRequest, ShoppingListsService } from '../../services/shop
 import { ShoppingListItemDto } from '../../model';
 import { v4 as uuidv4 } from 'uuid';
 import { SorterHelper } from 'src/app/shared/utils/sorter';
+import { MatDialog } from '@angular/material/dialog';
+import { UserProductDetailsComponent } from 'src/app/products/components/product-details/product-details.component';
 
 @Component({
   selector: 'app-list-items-organizer',
@@ -29,6 +31,7 @@ export class ListItemsOrganizerComponent implements OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor (private store: Store,
+    private dialog: MatDialog,
     private shoppingListService: ShoppingListsService,
     public progressService: ProgressService) {
   }
@@ -59,6 +62,15 @@ export class ListItemsOrganizerComponent implements OnDestroy {
       startWith(''),
       map(value => this._filter(value || '')),
     );
+  }
+
+  public addNewProduct() {
+    const dialog = this.dialog.open(UserProductDetailsComponent, {
+      data: {
+        navigateToListAfterSave: false
+      }
+    });
+    dialog.componentInstance.productAdded.subscribe(() => dialog.close());
   }
 
   public updateFilter(event: any) {

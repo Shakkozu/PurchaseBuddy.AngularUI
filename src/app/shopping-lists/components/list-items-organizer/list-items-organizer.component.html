@@ -22,6 +22,7 @@
     <input matInput [(ngModel)]="search" type="text" placeholder="Type to filter products"
       (keyup)="updateFilter($event)" />
   </mat-form-field>
+  <button (click)="addNewProduct()" style="margin-left:12px" mat-flat-button color="primary">Add new</button>
   <mat-list #products class="selection-list">
     <h4 *ngIf="getNotAddedProducts().length === 0">There are none left products to add :)</h4>
     <mat-list-item *ngFor="let item of notAddedProducts">
