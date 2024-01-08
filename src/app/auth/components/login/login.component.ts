@@ -11,7 +11,7 @@ import { Login } from '../../store/authorization.actions';
   providers: [],
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  public hide: boolean = false;
+  public hide: boolean = true;
   public loginForm!: FormGroup;
   private destroy$ = new Subject();
 
@@ -29,8 +29,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.loginForm = this.formBuilder.group({
-      login: ["username"],
-      password: ["zaq1@WSX"]
+      login: [""],
+      password: [""]
     });
   }
 
