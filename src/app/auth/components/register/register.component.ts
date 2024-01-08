@@ -32,10 +32,10 @@ export class RegisterComponent {
 
   private initForm(): void {
     this.form = this.formBuilder.group({
-      login: ['username', [Validators.required, Validators.minLength(6)]],
-      email: ['test@example.com', [Validators.required, Validators.email]],
-      password: ['zaq1@WSX', [Validators.required, Validators.minLength(6), Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9!@#$%^&*]+$')]],
-      confirmPassword: ['zaq1@WSX', {validator: this.passwordMatchValidator}],
+      login: ['', [Validators.required, Validators.minLength(6)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9!@#$%^&*]+$')]],
+      confirmPassword: ['', {validator: this.passwordMatchValidator}],
     }, {
       validator: this.passwordMatchValidator 
     });
@@ -48,7 +48,8 @@ export class RegisterComponent {
     const body: IUserDto = {
       login: this.form.value.login,
       email: this.form.value.email,
-      password: this.form.value.password
+      password: this.form.value.password,
+      confirmPassword: this.form.value.confirmPassword
     };
 
     this.store.dispatch(new Register(body)).pipe(takeUntil(this.destroy$));
