@@ -21,6 +21,8 @@ export class HttpAuthorizationInterceptor implements HttpInterceptor {
 					Authorization: `${ sessionId }`
 				}
 			});
+		} else {
+			this.store.dispatch(new Logout());
 		}
 
 		return next.handle(req).pipe(

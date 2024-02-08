@@ -9,12 +9,14 @@ export interface UserSessionStateModel {
 	username?: string;
 	userId?: string;
 	sessionId?: string;
+	timestamp?: number;
 }
 
 const defaultState: UserSessionStateModel = {
 	username: undefined,
 	userId: undefined,
-	sessionId: undefined
+	sessionId: undefined,
+	timestamp: undefined
 }
 
 @Injectable({
@@ -31,6 +33,8 @@ export class testService {
 })
 
 export class AuthorizationState {
+	private static sessionLifetimeInMinutes = 45;
+
 	constructor (private authorizationService: AuthorizationService,
 		private router: Router) {
 	}
@@ -42,24 +46,25 @@ export class AuthorizationState {
 			username: username,
 			userId: userId,
 			sessionId: sessionId,
+			timestamp: Date.now(),
 		});
 		this.router.navigate(['/user-products']);
 	}
-	
+
 	@Action(Login)
 	public login(ctx: StateContext<UserSessionStateModel>,
 		{ username, password }: Login) {
 		this.authorizationService.login(username, password)
-			.subscribe(response => ctx.dispatch(new OnLoginSuccess(username, response.sessionId, response.userId )));
+			.subscribe(response => ctx.dispatch(new OnLoginSuccess(username, response.sessionId, response.userId)));
 	}
-	
+
 	@Action(Register)
 	public register(ctx: StateContext<UserSessionStateModel>, { userDto }: Register) {
 		this.authorizationService.register(userDto).subscribe(() =>
 			ctx.dispatch(new Login(userDto.login, userDto.password))
 		);
 	}
-	
+
 	@Action(Logout)
 	public logout(ctx: StateContext<UserSessionStateModel>) {
 		const state = ctx.getState();
@@ -75,25 +80,25 @@ export class AuthorizationState {
 		ctx.patchState(defaultState);
 		this.redirect();
 	}
-	
+
 	@Selector()
 	public static isAuthenticated(state: UserSessionStateModel) {
-		return !!state.username;
+		return !!state.username && this.isTimestampOlderThan60Minutes(state.timestamp);
 	}
 
 	@Selector()
 	static userSessionId(state: UserSessionStateModel) {
-	  return state.sessionId;
+		return state.sessionId;
 	}
 
 	@Selector()
 	static userId(state: UserSessionStateModel) {
-	  return state.userId;
+		return state.userId;
 	}
-	
+
 	@Selector()
 	static username(state: UserSessionStateModel) {
-	  return state.username;
+		return state.username;
 	}
 
 	private redirect(): void {
@@ -101,5 +106,17 @@ export class AuthorizationState {
 		// Filtering on products table doesnt work.
 
 		this.router.navigate(['/']);
+	}
+
+	private static isTimestampOlderThan60Minutes(timestamp: number | undefined): boolean {
+		if (!timestamp)
+			return false;
+
+		const now = Date.now();
+		const millisecondsInOneMinute = 60000;
+
+		const differenceInMilliseconds = now - timestamp;
+		const differenceInMinutes = differenceInMilliseconds / millisecondsInOneMinute;
+		return differenceInMinutes > this.sessionLifetimeInMinutes;
 	}
 }
