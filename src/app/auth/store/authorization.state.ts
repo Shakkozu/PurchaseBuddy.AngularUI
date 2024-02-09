@@ -83,7 +83,7 @@ export class AuthorizationState {
 
 	@Selector()
 	public static isAuthenticated(state: UserSessionStateModel) {
-		return !!state.username && this.isTimestampOlderThan60Minutes(state.timestamp);
+		return !!state.username && !this.isTimestampOlderThan60Minutes(state.timestamp);
 	}
 
 	@Selector()
@@ -109,6 +109,7 @@ export class AuthorizationState {
 	}
 
 	private static isTimestampOlderThan60Minutes(timestamp: number | undefined): boolean {
+		console.log(timestamp);
 		if (!timestamp)
 			return false;
 
