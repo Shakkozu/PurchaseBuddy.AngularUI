@@ -31,7 +31,7 @@ export class UserShopsListComponent {
   }
 
   public addNew(): void {
-    this.router.navigate(['user-shop-details/new']);
+    this.router.navigate(['user-shops/new']);
   }
 
   public updateFilter(event: any) {

@@ -28,7 +28,7 @@ export class ImportSharedListComponent implements OnInit {
       return;
       
     this.sharedListService.getDetails(this.listId).subscribe(details => {
-      console.log(details);
+      (details);
       this.details = details
     });
   }
@@ -51,7 +51,7 @@ export class ImportSharedListComponent implements OnInit {
         this.snackBar.open('Shopping list was imported', undefined, {
           duration: 2000
         });
-        this.router.navigate([`shopping-list/${createdListId}`])
+        this.router.navigate([`shopping-lists/${createdListId}`])
       }))
     })
   }

@@ -45,7 +45,6 @@ export class CategoriesConfiguratorComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     this.currentStoreConfig = this.store.selectSnapshot(UserShopsState.currentStoreConfig);
-    console.log(this.currentStoreConfig);
     this.store.select(UserProductCategoriesState.productCategoriesFlat)
       .subscribe(categories => {
         const result: Array<ShopProductCategory> = [];

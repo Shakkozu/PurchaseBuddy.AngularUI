@@ -43,7 +43,6 @@ export class UserShopsState {
 	@Action(GetUserShops)
 	public getUserShops(ctx: StateContext<UserShopsStateModel>) {
 		return this.shopsService.getUserShops().subscribe(shops => {
-			console.log(shops);
 			ctx.patchState({
 				shops: shops
 			});

@@ -59,7 +59,6 @@ export class ShoppingListDetailsComponent implements OnInit {
     this.store.select(AuthorizationState.userId)
       .subscribe(userId => {
         this.userId = userId ?? '';
-        console.log(userId);
       });
   }
 
@@ -72,7 +71,6 @@ export class ShoppingListDetailsComponent implements OnInit {
     this.progressService.executeWithProgress(() => {
       return of(this.shoppingListSharingService.shareShoppingList(this.listId)
         .subscribe(sharedResourceId => {
-          console.log(sharedResourceId);
           const contentToCopy = window.location.origin + `/shopping-lists/import-shared/${sharedResourceId}`;
           navigator.clipboard.writeText(contentToCopy)
             .then(() => {

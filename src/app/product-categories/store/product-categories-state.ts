@@ -48,10 +48,10 @@ export class UserProductCategoriesState {
 	}
 
 	@Action(AddNewUserProductCategorySuccess)
-	public addNewUserProductCategorySuccess(ctx: StateContext<UserProductCategoriesStateModel>, { navigateToList }: AddNewUserProductCategory) {
+	public addNewUserProductCategorySuccess(ctx: StateContext<UserProductCategoriesStateModel>, action: AddNewUserProductCategorySuccess) {
 		ctx.dispatch(new InitializeUserProductCategories());
 		this.initializeUserProductCategories
-		if (navigateToList)
+		if (!action.addNext)
 			this.router.navigate(['user-product-categories']);
 		else
 			ctx.dispatch(new ResetAddCategoryComponent());

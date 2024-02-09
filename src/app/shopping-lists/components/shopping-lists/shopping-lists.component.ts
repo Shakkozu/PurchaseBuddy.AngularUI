@@ -54,7 +54,7 @@ export class ShoppingListsComponent {
   }
 
   public addNew() {
-    this.router.navigate(['shopping-list/new']);
+    this.router.navigate(['shopping-lists/new']);
   }
 
   public viewPendingInvitations() {

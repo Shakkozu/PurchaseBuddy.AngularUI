@@ -9,8 +9,8 @@ import { ImportSharedListComponent } from './components/import-shared-list/impor
 
 const routes: Routes = [
   { path: 'shopping-lists', component: ShoppingListsComponent, canActivate: [AuthGuard] },
-  { path: 'shopping-list/new', component: CreateShoppingListComponent, canActivate: [AuthGuard] },
-  { path: 'shopping-list/:id', component: ShoppingListDetailsComponent, canActivate: [AuthGuard] },
+  { path: 'shopping-lists/new', component: CreateShoppingListComponent, canActivate: [AuthGuard] },
+  { path: 'shopping-lists/:id', component: ShoppingListDetailsComponent, canActivate: [AuthGuard] },
   { path: 'shopping-lists/import-shared/:id', component: ImportSharedListComponent, canActivate: [AuthGuard] },
 ];
 

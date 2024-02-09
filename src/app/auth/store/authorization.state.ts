@@ -109,7 +109,6 @@ export class AuthorizationState {
 	}
 
 	private static isTimestampOlderThan60Minutes(timestamp: number | undefined): boolean {
-		console.log(timestamp);
 		if (!timestamp)
 			return false;
 

@@ -7,8 +7,8 @@ import { AuthGuard } from '../auth/auth.guard';
 
 const routes: Routes = [
   { path: 'user-shops', component: UserShopsListComponent, canActivate: [AuthGuard] },
-  { path: 'user-shop-details/new', component: UserShopDetailsComponent, canActivate: [AuthGuard] },
-  { path: 'user-shop-details/:id', component: UserShopDetailsComponent, canActivate: [AuthGuard] },
+  { path: 'user-shops/new', component: UserShopDetailsComponent, canActivate: [AuthGuard] },
+  { path: 'user-shops/:id', component: UserShopDetailsComponent, canActivate: [AuthGuard] },
 ]
 @NgModule({
   imports: [RouterModule.forChild(routes)],

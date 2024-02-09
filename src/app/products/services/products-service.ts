@@ -18,7 +18,6 @@ export class ProductsService {
 	if (request.categoryId)
 		body['categoryId'] = request.categoryId;
 		
-		console.log(body);
 		return this.http.post(this.urlBase, body);
 	}
 		

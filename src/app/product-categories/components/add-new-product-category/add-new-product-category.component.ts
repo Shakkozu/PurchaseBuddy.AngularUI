@@ -130,7 +130,7 @@ export class AddNewProductCategoryComponent implements OnInit {
     if (!request) return;
 
     this.progressService.executeWithProgress(
-      () => this.store.dispatch(new AddNewUserProductCategory(request, this.navigateToListAfterSave)));
+      () => this.store.dispatch(new AddNewUserProductCategory(request, false)));
     this.categoryAdded.emit();
   }
   
@@ -140,7 +140,7 @@ export class AddNewProductCategoryComponent implements OnInit {
 
     this.progressService.executeWithProgress(
       () =>
-        this.store.dispatch(new AddNewUserProductCategory(request, false))
+        this.store.dispatch(new AddNewUserProductCategory(request, true))
           .pipe(
           tap(() => this.ngOnInit())
         ));
