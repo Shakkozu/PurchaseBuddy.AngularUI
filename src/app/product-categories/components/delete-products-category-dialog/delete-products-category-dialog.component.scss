@@ -3,10 +3,14 @@
 }
 
 mat-tree-node {
-	  display: flex;
+  display: flex;
   align-items: center;
   padding: 0 24px;
-  background-color: antiquewhite;
+  font-size: medium;
+  background-color: #50e7c5;
+  font-weight: 400;
+  color: #000000;
+  border-radius: 12px;
   margin: 8px 0;
 }
 
@@ -20,22 +24,24 @@ mat-tree-node {
 }
 
 .example-tree-node-content:hover {
-  background-color: #e5e5e5;
+  background-color: #389b84;
+  border-radius: 12px;
 }
 
 .disabled {
   cursor: none;
   pointer-events: none;
-  color:burlywood;
+  color: #439a86;
 }
 
-.action-buttons-container  {
+.action-buttons-container {
   display: contents;
   margin-right: 16px;
-	margin-top: 32px;
-	button {
-		margin-left: 8px;
-	}
+  margin-top: 32px;
+
+  button {
+    margin-left: 8px;
+  }
 }
 
 .action-grid {

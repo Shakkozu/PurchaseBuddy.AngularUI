@@ -9,8 +9,12 @@
 mat-tree-node {
   align-items: center;
   padding: 0 24px;
-  background-color: antiquewhite;
+  background-color: #50e7c5;
   margin: 8px 0;
+  font-size: medium;
+    font-weight: 400;
+    color: #000000;
+    border-radius: 12px;
 }
 
 .example-tree {
@@ -71,7 +75,7 @@ mat-tree-node {
 }
 
 .example-tree-node-content:hover {
-  background-color: #e5e5e5;
+  background-color: #38bfa0;
 }
 
 .example-tree-node-button {
@@ -87,11 +91,11 @@ mat-tree-node {
 }
 
 .example-tree-node-active {
-  background-color: #e0f2f1;
+  background-color: #38bfa0;
 }
 
 .selected-node {
   border-radius: 12px;
   font-weight: 600;
-  background-color: #e3c9ab;
+  background-color: #38bfa0;
 }

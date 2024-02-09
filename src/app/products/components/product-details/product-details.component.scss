@@ -4,10 +4,14 @@
 }
 
 mat-tree-node {
-	  display: flex;
+  display: flex;
   align-items: center;
   padding: 0 24px;
-  background-color: antiquewhite;
+  background-color: #50e7c5;
+  font-size: medium;
+  font-weight: 400;
+  color: #000000;
+  border-radius: 12px;
   margin: 8px 0;
 }
 
@@ -56,7 +60,8 @@ mat-tree-node {
 }
 
 .example-tree-node-content:hover {
-  background-color: #e5e5e5;
+  background-color: #35a48a;
+  border-radius: 12px;
 }
 
 .example-tree-node-button {
@@ -72,7 +77,8 @@ mat-tree-node {
 }
 
 .example-tree-node-active {
-  background-color: #e0f2f1;
+  background-color: #35a48a;
+  border-radius: 12px;
 }
 
 
@@ -81,4 +87,3 @@ mat-tree-node {
   align-items: center;
   justify-content: space-between;
 }
-
