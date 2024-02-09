@@ -87,7 +87,6 @@ nav.mobile-navbar {
   width: 100%;
   display: flex;
   justify-content: center;
-  // height: 5%;
 
   a {
     padding: 4px;
@@ -114,4 +113,10 @@ nav.mobile-navbar {
   position: relative;
   z-index: 2;
   height: 80px;
+}
+
+.nav-option.active {
+  mat-icon {
+    color: #58d768;
+  }
 }

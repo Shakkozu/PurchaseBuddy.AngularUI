@@ -52,7 +52,9 @@ export class CreateShoppingListComponent {
       assignedShop: new FormControl(''),
       assignedUser: new FormControl(''),
     });
-    this.usersService.getAllUsers().subscribe(users => this.users = users);
+    this.usersService.getAllUsers().subscribe(users => {
+      this.users = users
+    });
 
     this.store.select(UserProductsState.products).subscribe(products => {
       this.products = products;
@@ -126,7 +128,7 @@ export class CreateShoppingListComponent {
     this.progressService.executeWithProgress(() =>
       this.shoppingListService.createNew(listItems, assignedShopId).pipe(
         switchMap(createdListId => {
-          if(assignedUserId.length > 0)
+          if(assignedUserId?.length > 0)
             return this.invitationsService.inviteUserToPurchase(createdListId, assignedUserId)
 
           return of('skipping inviting')
